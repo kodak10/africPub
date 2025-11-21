@@ -40,6 +40,7 @@ class Publicite extends Model
     {
         return $this->hasMany(VuePublicite::class);
     }
+    
 
     public function clics()
     {
