@@ -13,15 +13,16 @@ class Publicite extends Model
         'annonceur_id',
         'titre',
         'type_media',
-        'fichier',
+        'media_path',
         'url_cible',
         'forfait_id',
         'statut',
+        'statut'
     ];
 
     public function annonceur()
     {
-        return $this->belongsTo(User::class, 'annonceur_id');
+        return $this->belongsTo(Annonceur::class, 'annonceur_id');
     }
 
     public function forfait()

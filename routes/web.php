@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AnnonceurController;
 use App\Http\Controllers\Admin\MediaController;
+use App\Http\Controllers\Admin\PubliciteController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -32,12 +33,21 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::prefix('medias')->name('medias.')->group(function () {
         Route::get('/', [MediaController::class, 'index'])->name('index');
+        Route::get('/toggle-status/{id}/{action}', [MediaController::class, 'toggleStatus'])->name('toggle-status');
+
         Route::get('/show/{id}', [MediaController::class, 'show'])->name('show'); // pour modal (AJAX)
     });
 
-    Route::get('/publicites', function () {
-        return 'Gestion des Publicités';
-    })->name('publicites');
+    Route::get('/publicites', [PubliciteController::class, 'index'])->name('publicites.index');
+    Route::get('/publicites/suspend/{id}', [PubliciteController::class, 'suspend'])->name('publicites.suspend');
+    Route::get('/publicites/{id}/status/{status}', [PubliciteController::class, 'changeStatus'])->name('publicites.change-status');
+
+    // Afficher toutes les publicités validées
+    Route::get('/publicites/assign-media', [PubliciteController::class, 'assignMediaToPublicite'])->name('publicites.assign-media');
+    // Formulaire d'assignation des médias pour une publicité
+    Route::get('/publicites/{publicite}/assign-media', [PubliciteController::class, 'assignMediaToPubliciteForm'])->name('publicites.assign-media-form');
+    // Enregistrer les médias affectés à une publicité
+    Route::post('/publicites/{publicite}/assign-media', [PubliciteController::class, 'assignMediaToPubliciteStore'])->name('publicites.assign-media-store');
 
     Route::get('/sites/moderation', function () {
         return 'Modération des sites';

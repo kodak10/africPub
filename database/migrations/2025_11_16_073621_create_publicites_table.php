@@ -16,10 +16,10 @@ return new class extends Migration
             $table->foreignId('annonceur_id')->constrained('annonceurs')->onDelete('cascade');
             $table->string('titre');
             $table->enum('type_media',['image','video']);
-            $table->string('fichier'); // chemin fichier media
+            $table->string('media_path'); // chemin fichier media
             $table->string('url_cible');
             $table->foreignId('forfait_id')->constrained('forfaits')->onDelete('cascade');
-            $table->enum('statut',['brouillon','en_attente_paiement','en_attente_validation','approuve','rejete'])->default('brouillon');
+            $table->enum('statut', ['brouillon', 'en_attente_paiement', 'en_attente_validation', 'approuve', 'rejete', 'validé', 'suspendu'])->default('brouillon');
             $table->timestamps();
             $table->softDeletes();
 

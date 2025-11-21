@@ -72,16 +72,16 @@
                         </li>
 
                         <li>
-                            <a href="{{ route('admin.publicites') }}">
+                            <a href="{{ route('admin.publicites.index') }}">
                                 <i class="material-icons nav-icon">campaign</i>
                                 Gestion des Publictés
                             </a>
                         </li>
 
                         <li>
-                            <a href="{{ route('admin.sites') }}">
+                            <a href="{{ route('admin.publicites.assign-media') }}">
                                 <i class="material-icons nav-icon">security</i>
-                                Moderation des Sites
+                                Attributions des Publicités
                             </a>
                         </li>
 
