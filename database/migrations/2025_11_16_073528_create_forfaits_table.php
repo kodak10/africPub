@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('libelle');
             $table->decimal('montant', 10, 2);
+            $table->enum('type', ['Video', 'Image']);
             $table->integer('objectif_vues');
             $table->text('description')->nullable();
             $table->timestamps();

@@ -14,6 +14,7 @@ class Forfait extends Model
         'montant',
         'objectif_vues',
         'description',
+        'type',
     ];
 
     public function publicites()
