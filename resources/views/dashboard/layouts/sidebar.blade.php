@@ -3,7 +3,7 @@
 
     <div class="brand">
         <img src="../assets/images/arctic-admin-circle.svg" alt="">
-        <span class="app-logo-text ms-2 text-20">Arctic</span>
+        <span class="app-logo-text ms-2 text-20">Afric-Pub</span>
     </div>
 
     <div class="scroll-nav" data-perfect-scrollbar data-suppress-scroll-x="true">
@@ -80,7 +80,7 @@
 
                         <li>
                             <a href="{{ route('admin.publicites.assign-media') }}">
-                                <i class="material-icons nav-icon">security</i>
+                                <i class="material-icons nav-icon">playlist_add_check</i>
                                 Attributions des Publicités
                             </a>
                         </li>
@@ -89,11 +89,46 @@
                             <a class="has-arrow" href="#">
                                 <i class="material-icons nav-icon">payments</i>Paiements
                             </a>
+
                             <ul class="mm-collapse">
-                                <li><a href="{{ route('admin.paiements.create') }}"><i class="bullet-icon"></i>Faire un Paiement</a></li>
-                                <li><a href="{{ route('admin.paiements.index') }}"><i class="bullet-icon"></i>Liste des Paiements</a></li>
+
+                                <!-- Sous-menu Paiement -->
+                               <li>
+                                    <a class="has-arrow" href="#">
+                                        <i class="material-icons">account_balance_wallet</i>Paiement
+                                    </a>
+                                    <ul class="mm-collapse">
+                                        <li>
+                                            <a href="{{ route('admin.paiements.index') }}">
+                                                <i class="bullet-icon"></i>Demandes de Paiement
+                                            </a>
+                                        </li>
+                                            <a href="{{ route('admin.paiements.historique') }}">
+                                                <i class="bullet-icon"></i>Historique des Paiements
+                                            </a>
+                                    </ul>
+                                </li>
+
+                                <!-- Sous-menu Remboursement -->
+                                <li>
+                                        <a class="has-arrow" href="#">
+                                            <i class="material-icons">restore_page</i>Remboursement
+                                        </a>
+                                        <ul class="mm-collapse">
+
+                                        <!-- Réclamation de remboursement -->
+                                        <li>
+                                            <a href="{{ route('admin.paiements.remboursements.index') }}">
+                                                <i class="bullet-icon"></i>Réclamation de Remboursement
+                                            </a>
+                                        </li>                                        
+                                    </ul>
+                                </li>
+
+
                             </ul>
                         </li>
+
 
                         <li>
                             <a href="{{ route('admin.rapport_financier') }}">

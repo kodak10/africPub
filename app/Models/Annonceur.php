@@ -24,4 +24,34 @@ class Annonceur extends Authenticatable
     {
         return $this->hasMany(Publicite::class, 'annonceur_id');
     }
+
+    public function paiementsAnnonceur()
+    {
+        return $this->hasMany(PaiementAnnonceur::class);
+    }
+
+    public function demandesRemboursement()
+    {
+        return $this->hasMany(DemandeRemboursementAnnonceur::class);
+    }
+
+    public function demandesRemboursementEnAttente()
+    {
+        return $this->hasMany(DemandeRemboursementAnnonceur::class)->where('statut', DemandeRemboursementAnnonceur::STATUT_EN_ATTENTE);
+    }
+
+    // Méthode pour calculer le solde remboursable
+    public function getSoldeRemboursableAttribute()
+    {
+        return $this->paiementsAnnonceur()
+            ->where('statut', PaiementAnnonceur::STATUT_PAYE)
+            ->whereDoesntHave('demandesRemboursement', function($query) {
+                $query->whereIn('statut', [
+                    DemandeRemboursementAnnonceur::STATUT_EN_ATTENTE,
+                    DemandeRemboursementAnnonceur::STATUT_APPROUVE,
+                    DemandeRemboursementAnnonceur::STATUT_REMBOURSE
+                ]);
+            })
+            ->sum('montant');
+    }
 }

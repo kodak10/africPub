@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('media_id')->constrained('medias')->onDelete('cascade');
             $table->decimal('montant', 10,2);
             $table->enum('statut',['en_attente','paye','rejete'])->default('en_attente');
+            $table->string('raison_fraude')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

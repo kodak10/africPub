@@ -19,12 +19,14 @@ class DatabaseSeeder extends Seeder
             RolesSeeder::class,
             UsersSeeder::class,
             ForfaitsSeeder::class,
-            PublicitesSeeder::class,       // à créer avant PubliciteMediaSeeder
+            PublicitesSeeder::class,
             PubliciteMediaSeeder::class,
             VuesPublicitesSeeder::class,
             ClicsPublicitesSeeder::class,
             DemandesPaiementSeeder::class,
-            HistoriquePaiementsSeeder::class,
+            PaiementAnnonceurSeeder::class,
+            PaiementMediaSeeder::class,
+            DemandesRemboursementSeeder::class,
             
         ]);
     }
