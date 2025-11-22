@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('telephone')->nullable();
             $table->string('adresse')->nullable();
-            $table->boolean('actif')->default(true);
+            $table->enum('statut', ['en attente','validé','suspendu',])->default('validé');
             $table->timestamps();
             $table->softDeletes();
         });

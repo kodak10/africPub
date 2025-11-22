@@ -20,8 +20,8 @@
     </div>
 </div>
 
-<!-- TABLE -->
-<div class="col-lg-12">
+<div class="container mt-3">
+    <div class="col-lg-12">
     <div class="card">
         <div class="card-header">
             <h2 class="p-1 m-0 text-16 font-weight-semi">Liste des annonceurs</h2>
@@ -48,8 +48,11 @@
                         <td>{{ $annonceur->telephone ?? '-' }}</td>
                         <td>{{ $annonceur->adresse ?? '-' }}</td>
                         <td>
-                            <span class="badge {{ $annonceur->actif ? 'bg-success' : 'bg-warning' }}">
-                                {{ $annonceur->actif ? 'Validé' : 'En attente' }}
+                            <span class="badge 
+                                @if($annonceur->statut == 'validé') bg-success 
+                                @elseif($annonceur->statut == 'suspendu') bg-danger 
+                                @else bg-warning @endif">
+                                {{ ucfirst($annonceur->statut) }}
                             </span>
                         </td>
                         <td>
@@ -58,18 +61,16 @@
                                 <i class="material-icons">visibility</i>
                             </a>
                             <!-- Actions rapides -->
-                            @if(!$annonceur->actif)
-                            <a href="#" class="text-success me-2 validate-btn" data-id="{{ $annonceur->id }}" title="Valider">
+                            @if($annonceur->statut !== 'validé')
+                            <a href="{{ route('admin.annonceurs.toggle-status', [$annonceur->id, 'validate']) }}" class="text-success me-2 validate-btn" data-id="{{ $annonceur->id }}" title="Valider">
                                 <i class="material-icons">check_circle</i>
                             </a>
                             @else
-                            <a href="#" class="text-warning me-2 suspend-btn" data-id="{{ $annonceur->id }}" title="Suspendre">
+                            <a href="{{ route('admin.annonceurs.toggle-status', [$annonceur->id, 'suspend']) }}" class="text-warning me-2 suspend-btn" data-id="{{ $annonceur->id }}" title="Suspendre">
                                 <i class="material-icons">pause_circle</i>
                             </a>
                             @endif
-                            <a href="#" class="text-danger delete-btn" data-id="{{ $annonceur->id }}" data-name="{{ $annonceur->nom }}" title="Supprimer">
-                                <i class="material-icons">delete</i>
-                            </a>
+                            
                         </td>
                     </tr>
                     @endforeach
@@ -77,6 +78,7 @@
             </table>
         </div>
     </div>
+</div>
 </div>
 
 <!-- MODALS (hors tableau) -->
@@ -181,7 +183,6 @@
                                                 <th>Titre</th>
                                                 <th>Type Média</th>
                                                 <th>Forfait</th>
-                                                <th>Dates</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -206,22 +207,12 @@
                                                         <br><small class="text-muted">{{ $pub->forfait->montant ?? '0' }} FCFA</small>
                                                     @endif
                                                 </td>
-                                                <td>
-                                                    <small>
-                                                        Début: {{ $pub->date_debut ? \Carbon\Carbon::parse($pub->created_at)->format('d/m/Y') : '-' }}<br>
-                                                    </small>
-                                                </td>
                                             </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="mt-3 text-center">
-                                    <p class="text-muted">
-                                        Total: <strong>{{ $annonceur->publicites->count() }}</strong> publicité(s) | 
-                                        Actives: <strong>{{ $annonceur->publicites->where('statut', 'actif')->count() }}</strong>
-                                    </p>
-                                </div>
+                                
                             @else
                                 <div class="text-center py-5">
                                     <i class="material-icons text-muted" style="font-size: 48px;">campaign</i>
@@ -247,7 +238,7 @@
                                     <div class="card bg-success text-white">
                                         <div class="card-body">
                                             <i class="material-icons mb-2">check_circle</i>
-                                            <h3>{{ $annonceur->publicites->where('statut', 'actif')->count() }}</h3>
+                                            <h3>{{ $annonceur->publicites->where('statut', 'approuve')->count() }}</h3>
                                             <p class="mb-0">Publicités actives</p>
                                         </div>
                                     </div>

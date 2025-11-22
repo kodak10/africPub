@@ -15,14 +15,26 @@ class AnnonceurController extends Controller
         return view('dashboard.pages.admin.annonceurs.index', compact('annonceurs'));
     }
 
-    public function validateProfil($id)
+     public function toggleStatus($id, $action)
     {
         $annonceur = Annonceur::findOrFail($id);
-        $annonceur->actif = 1;
-        $annonceur->save();
 
-        return response()->json(['message' => 'Profil validé avec succès !']);
+        if ($action === 'validate') {
+            $annonceur->statut = 'validé';
+            $annonceur->save();
+            session()->flash('success', 'Annonceur validé avec succès !');
+        } elseif ($action === 'suspend') {
+            $annonceur->statut = 'suspendu';
+            $annonceur->save();
+            session()->flash('success', 'Annonceur suspendu avec succès !');
+        } else {
+            session()->flash('error', 'Action inconnue');
+        }
+
+        return redirect()->route('admin.annonceurs.index');
     }
+
+
 
     public function show($id)
     {

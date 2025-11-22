@@ -20,8 +20,8 @@
     </div>
 </div>
 
-<!-- FILTRES -->
-<div class="card mb-4">
+<div class="container mt-5">
+    <div class="card mb-4">
     <div class="card-body">
         <form method="GET" action="{{ route('annonceur.rapports') }}" class="row g-3">
             <div class="col-md-4">
@@ -48,9 +48,8 @@
     </div>
 </div>
 
-<!-- STATISTIQUES GLOBALES -->
 <div class="row mb-4">
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="card bg-primary text-white">
             <div class="card-body text-center">
                 <i class="material-icons mb-2" style="font-size: 40px;">visibility</i>
@@ -59,7 +58,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="card bg-success text-white">
             <div class="card-body text-center">
                 <i class="material-icons mb-2" style="font-size: 40px;">touch_app</i>
@@ -68,16 +67,8 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card bg-info text-white">
-            <div class="card-body text-center">
-                <i class="material-icons mb-2" style="font-size: 40px;">trending_up</i>
-                <h3>{{ number_format($statsGlobales['taux_conversion'], 1) }}%</h3>
-                <p class="mb-0">Taux Conversion</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
+    
+    <div class="col-md-4">
         <div class="card bg-warning text-white">
             <div class="card-body text-center">
                 <i class="material-icons mb-2" style="font-size: 40px;">payments</i>
@@ -88,7 +79,6 @@
     </div>
 </div>
 
-<!-- PERFORMANCES PAR PUBLICITÉ -->
 <div class="card">
     <div class="card-header">
         <h2 class="p-1 m-0 text-16 font-weight-semi">Performances par Publicité</h2>
@@ -104,8 +94,6 @@
                             <th>Statut</th>
                             <th>Vues</th>
                             <th>Clics</th>
-                            <th>Taux Conversion</th>
-                            <th>Performance</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -128,22 +116,8 @@
                             <td>
                                 <strong class="text-success">{{ number_format($publicite->clics_count) }}</strong>
                             </td>
-                            <td>
-                                <strong class="text-{{ $publicite->taux_conversion > 2 ? 'success' : 'warning' }}">
-                                    {{ number_format($publicite->taux_conversion, 1) }}%
-                                </strong>
-                            </td>
-                            <td>
-                                @if($publicite->taux_conversion > 3 && $publicite->vues_count > 1000)
-                                <span class="badge bg-success">Excellente</span>
-                                @elseif($publicite->taux_conversion > 1 && $publicite->vues_count > 500)
-                                <span class="badge bg-info">Bonne</span>
-                                @elseif($publicite->vues_count > 0)
-                                <span class="badge bg-warning">Moyenne</span>
-                                @else
-                                <span class="badge bg-secondary">Aucune donnée</span>
-                                @endif
-                            </td>
+                            
+                            
                         </tr>
                         @endforeach
                     </tbody>
@@ -157,6 +131,7 @@
             </div>
         @endif
     </div>
+</div>
 </div>
 
 @endsection

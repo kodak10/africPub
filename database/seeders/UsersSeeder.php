@@ -33,17 +33,17 @@ class UsersSeeder extends Seeder
         // ANNONCEURS
         // ---------------------------------------------------------
         $annonceursData = [
-            ['Jean Annonceur', 'annonceur1@example.com', true],
-            ['Marie Annonceur', 'annonceur2@example.com', false],
-            ['Paul Annonceur', 'annonceur3@example.com', true],
+            ['Jean Annonceur', 'annonceur1@example.com', 'validé'],   // 'validé' comme statut
+            ['Marie Annonceur', 'annonceur2@example.com', 'suspendu'], // 'suspendu' pour cet exemple
+            ['Paul Annonceur', 'annonceur3@example.com', 'en attente'], // 'en attente' pour cet exemple
         ];
+
 
         foreach ($annonceursData as $data) {
             $user = User::create([
                 'name' => $data[0],
                 'email' => $data[1],
                 'password' => Hash::make('password'),
-                'actif' => $data[2],
                 'email_verified_at' => now(),
             ]);
 
@@ -52,7 +52,7 @@ class UsersSeeder extends Seeder
             Annonceur::create([
                 'nom' => $data[0],
                 'email' => $data[1],
-                'actif' => $data[2],
+                'statut' => $data[2],    
             ]);
         }
 

@@ -17,12 +17,17 @@ class Annonceur extends Authenticatable
         'email',
         'telephone',
         'adresse',
-        'actif',
+        'statut',
     ];
 
     public function publicites()
     {
         return $this->hasMany(Publicite::class, 'annonceur_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function paiementsAnnonceur()

@@ -40,7 +40,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
      */
     Route::prefix('annonceurs')->name('annonceurs.')->group(function () {
         Route::get('/', [AdminAnnonceurController::class, 'index'])->name('index');
-        Route::get('/show/{id}', [AdminAnnonceurController::class, 'show'])->name('show'); // AJAX
+        Route::get('/toggle-status/{id}/{action}', [AdminAnnonceurController::class, 'toggleStatus'])->name('toggle-status');
+        Route::get('/show/{id}', [AdminAnnonceurController::class, 'show'])->name('show'); 
     });
 
     /**
@@ -51,7 +52,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::prefix('medias')->name('medias.')->group(function () {
         Route::get('/', [MediaController::class, 'index'])->name('index');
         Route::get('/toggle-status/{id}/{action}', [MediaController::class, 'toggleStatus'])->name('toggle-status');
-        Route::get('/show/{id}', [MediaController::class, 'show'])->name('show'); // AJAX
+        Route::get('/show/{id}', [MediaController::class, 'show'])->name('show');
     });
 
     /**

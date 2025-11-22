@@ -27,7 +27,8 @@ return new class extends Migration
             $table->bigInteger('total_clics')->default(0);
             $table->decimal('revenu_actuel',10,2)->default(0);
             $table->boolean('paiement_demande')->default(false);
-            $table->enum('statut', ['en attente','validé','suspendu',])->default('en attente');            $table->timestamps();
+            $table->enum('statut', ['en attente','validé','suspendu',])->default('validé');
+            $table->timestamps();
             $table->softDeletes();
 
         });

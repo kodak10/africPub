@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="{{ asset('assets/css/vendors.bundle.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/main.bundle.min.css') }}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
 </head>
 
 <body>
@@ -243,6 +246,44 @@
     <script src="{{ asset('assets/vendors/apexcharts/dist/apexcharts.min.js') }}"></script>
     <script src="{{ asset('assets/js/data/series.min.js') }}"></script>
     <script src="{{ asset('assets/js/pages/dashboard/jobManagement.min.js') }}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https:////cdn.datatables.net/plug-ins/2.3.5/i18n/fr-FR.json"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Vérification de la présence de messages de session
+            @if (session('success'))
+                toastr.success("{{ session('success') }}");
+            @elseif (session('error'))
+                toastr.error("{{ session('error') }}");
+            @endif
+
+            // Configuration de Toastr
+            toastr.options = {
+                "closeButton": true,        // Bouton de fermeture
+                "progressBar": true,        // Barre de progression
+                "positionClass": "toast-top-right", // Position du toast
+                "timeOut": "5000"           // Durée d'affichage (en ms)
+            };
+
+
+            // Vérification si DataTable a déjà été initialisé
+            if ($.fn.dataTable.isDataTable('#datatableScrollXY')) {
+                $('#datatableScrollXY').DataTable().destroy();  // Détruire l'instance existante
+            }
+
+            // Initialisation de DataTable
+            var table = $('#datatableScrollXY').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/2.3.5/i18n/fr-FR.json', // Chargement de la traduction
+                },
+            });
+
+            
+        });
+    </script>
+
 </body>
 
 </html>

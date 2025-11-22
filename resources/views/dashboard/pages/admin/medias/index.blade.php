@@ -10,7 +10,7 @@
             <nav class="ul-breadcrumb" aria-label="breadcrumb">
                 <ol class="ul-breadcrumb-items">
                     <li class="breadcrumb-home">
-                        <a href="#"><i class="material-icons">home</i></a>
+                        <a href="/"><i class="material-icons">home</i></a>
                     </li>
                     <li class="breadcrumb-item"><a href="#">Gestion</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Médias</li>
@@ -20,11 +20,11 @@
     </div>
 </div>
 
-<!-- TABLE -->
-<div class="col-lg-12">
+<div class="container mt-3">
+    <div class="col-lg-12">
     <div class="card">
         <div class="card-header">
-            <h2 class="p-1 m-0 text-16 font-weight-semi">Liste des médias</h2>
+            <h2 class="p-1 m-0 text-16 font-weight-semi">Liste des Médias</h2>
         </div>
         <div class="card-body">
             <table class="table nowrap" id="datatableScrollXY" style="width:100%">
@@ -89,8 +89,8 @@
         </div>
     </div>
 </div>
+</div>
 
-<!-- MODALS DETAILS -->
 @foreach($medias as $media)
 <div class="modal fade" id="modalMedia{{ $media->id }}" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -244,7 +244,7 @@
 
                                 @foreach($media->publicites_actives as $pub)
 
-                                    <div class="col-md-4 mb-3">
+                                    <div class="col-md-3 mb-3">
                                         <div class="card shadow-sm">
                                             <div class="card-body text-center">
 
@@ -301,21 +301,6 @@
 <script>
 $(document).ready(function () {
     // Datatable en français
-    $('#datatableScrollXY').DataTable({
-        scrollY: "400px",
-        scrollX: true,
-        scrollCollapse: true,
-        paging: true,
-        searching: true,
-        ordering: true,
-        responsive: false,
-        language: {
-            url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json"
-        },
-        dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
-             '<"row"<"col-sm-12"tr>>' +
-             '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>'
-    });
 
     // Configuration de Toastr
     toastr.options = {
