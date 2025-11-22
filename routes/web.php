@@ -1,9 +1,12 @@
 <?php
 
-use App\Http\Controllers\Admin\AnnonceurController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\PubliciteController;
 use App\Http\Controllers\Admin\PaiementController;
+use App\Http\Controllers\Admin\AnnonceurController as AdminAnnonceurController;
+use App\Http\Controllers\Annonceur\AnnonceurController as UserAnnonceurController;
+
+
 use App\Http\Controllers\Admin\RemboursementAnnonceurController;
 
 use Illuminate\Support\Facades\Route;
@@ -36,8 +39,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
      * -------------------------
      */
     Route::prefix('annonceurs')->name('annonceurs.')->group(function () {
-        Route::get('/', [AnnonceurController::class, 'index'])->name('index');
-        Route::get('/show/{id}', [AnnonceurController::class, 'show'])->name('show'); // AJAX
+        Route::get('/', [AdminAnnonceurController::class, 'index'])->name('index');
+        Route::get('/show/{id}', [AdminAnnonceurController::class, 'show'])->name('show'); // AJAX
     });
 
     /**
@@ -145,34 +148,27 @@ Route::prefix('admin')->name('admin.')->group(function () {
 | Annonceurs
 |--------------------------------------------------------------------------
 */
+// Routes pour l'espace annonceur
 Route::prefix('annonceur')->name('annonceur.')->group(function () {
-
-    Route::get('/dashboard', function () {
-        return 'Dashboard Annonceur';
-    })->name('dashboard');
-
-    Route::get('/create-publicite', function () {
-        return 'Créer une publicité';
-    })->name('create_publicites');
-
-    Route::get('/mes-publicites', function () {
-        return 'Mes publicités';
-    })->name('index_publicites');
-
-    Route::get('/rapports', function () {
-        return 'Rapports annonceur';
-    })->name('rapports');
-
-    Route::prefix('paiements')->name('paiements.')->group(function () {
-        Route::get('/historique', function () {
-            return 'Historique des paiements Annonceur';
-        })->name('historique');
-
-        Route::get('/remboursement', function () {
-            return 'Réclamer un remboursement';
-        })->name('remboursement');
-    });
+    // Dashboard
+    Route::get('/dashboard', [UserAnnonceurController::class, 'dashboard'])->name('dashboard');
+    
+    // Publicités
+    Route::get('/publicites/create', [UserAnnonceurController::class, 'createPublicite'])->name('create_publicites');
+    Route::get('/publicites', [UserAnnonceurController::class, 'publicites'])->name('index_publicites');
+    Route::get('/publicites/{id}', [UserAnnonceurController::class, 'showPublicite'])->name('show_publicite');
+    Route::post('/publicites', [UserAnnonceurController::class, 'storePublicite'])->name('store_publicite');
+    
+    // Rapports
+    Route::get('/rapports', [UserAnnonceurController::class, 'rapports'])->name('rapports');
+    
+    // Paiements
+    Route::get('/paiements/historique', [UserAnnonceurController::class, 'historiquePaiements'])->name('paiements.historique');
+    Route::get('/paiements/remboursement', [UserAnnonceurController::class, 'createRemboursement'])->name('paiements.remboursement');
+    Route::post('/paiements/remboursement', [UserAnnonceurController::class, 'storeRemboursement'])->name('store_remboursement');
+    Route::get('/paiements/{id}', [UserAnnonceurController::class, 'showPaiement'])->name('show_paiement');
 });
+
 
 
 /*
