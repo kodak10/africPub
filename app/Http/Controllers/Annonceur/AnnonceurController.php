@@ -11,13 +11,14 @@ use App\Models\Forfait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class AnnonceurController extends Controller
 {
     // Dashboard annonceur
     public function dashboard()
     {
-        $annonceur = auth()->user() ?? 1; // Pour test sans auth
+        $annonceur = auth()->user() ?? Annonceur::first(); // Pour test sans auth
         
         // Statistiques
         $totalPublicites = $annonceur->publicites()->count();
@@ -105,38 +106,50 @@ class AnnonceurController extends Controller
 
     // Stocker une nouvelle publicité
     public function storePublicite(Request $request)
-    {
-        $request->validate([
-            'titre' => 'required|string|max:255',
-            'type_media' => 'required|in:image,video',
-            'media_file' => 'required|file|mimes:jpg,jpeg,png,mp4,mov,avi|max:10240',
-            'url_cible' => 'required|url',
-            'forfait_id' => 'required|exists:forfaits,id',
-            'description' => 'nullable|string|max:500'
+{
+    $request->validate([
+        'titre' => 'required|string|max:255',
+        'media_file' => 'required|file|mimes:jpg,jpeg,png,mp4,mov,avi|max:10240',
+        'url_cible' => 'required|url',
+        'forfait_id' => 'required|exists:forfaits,id',
+        'description' => 'nullable|string|max:500'
+    ]);
+
+    $annonceur = auth()->user();
+
+    DB::transaction(function () use ($request, $annonceur) {
+        $file = $request->file('media_file');
+        $extension = strtolower($file->getClientOriginalExtension());
+
+        // Déterminer automatiquement le type de média
+        if (in_array($extension, ['jpg', 'jpeg', 'png'])) {
+            $type_media = 'image';
+        } elseif (in_array($extension, ['mp4', 'mov', 'avi'])) {
+            $type_media = 'video';
+        } else {
+            throw new \Exception('Format de fichier non supporté.');
+        }
+
+        // Upload du fichier
+        $mediaPath = $file->store('publicites', 'public');
+
+        // Création de la publicité
+        Publicite::create([
+            'annonceur_id' => $annonceur->id ?? 1,
+            'titre' => $request->titre,
+            'type_media' => $type_media,
+            'media_path' => $mediaPath,
+            'url_cible' => $request->url_cible,
+            'forfait_id' => $request->forfait_id,
+            'statut' => 'en_attente_validation',
+            'description' => $request->description
         ]);
+    });
 
-        $annonceur = auth()->user();
+    return redirect()->route('annonceur.index_publicites')
+        ->with('success', 'Publicité créée avec succès. Elle est en attente de validation par l\'administration.');
+}
 
-        DB::transaction(function () use ($request, $annonceur) {
-            // Upload du fichier média
-            $mediaPath = $request->file('media_file')->store('publicites', 'public');
-
-            // Création de la publicité
-            $publicite = Publicite::create([
-                'annonceur_id' => $annonceur->id ?? 1, // Pour test sans auth
-                'titre' => $request->titre,
-                'type_media' => $request->type_media,
-                'media_path' => $mediaPath,
-                'url_cible' => $request->url_cible,
-                'forfait_id' => $request->forfait_id,
-                'statut' => 'en_attente_validation',
-                'description' => $request->description
-            ]);
-        });
-
-        return redirect()->route('annonceur.index_publicites')
-            ->with('success', 'Publicité créée avec succès. Elle est en attente de validation par l\'administration.');
-    }
 
     // Rapports et statistiques
     public function rapports(Request $request)
@@ -166,19 +179,24 @@ class AnnonceurController extends Controller
 
         // Performances par publicité
         $performancesPublicites = $annonceur->publicites()
-            ->withCount(['vues' => function($query) use ($dateDebut, $dateFin) {
-                $query->whereBetween('date_vue', [$dateDebut, $dateFin]);
-            }])
-            ->withCount(['clics' => function($query) use ($dateDebut, $dateFin) {
-                $query->whereBetween('date_clic', [$dateDebut, $dateFin]);
-            }])
             ->with('forfait')
+            ->withCount([
+                'vues as total_vues' => function ($query) use ($dateDebut, $dateFin) {
+                    $query->whereBetween('date_vue', [$dateDebut, $dateFin]);
+                },
+                'clics as total_clics' => function ($query) use ($dateDebut, $dateFin) {
+                    $query->whereBetween('date_clic', [$dateDebut, $dateFin]);
+                },
+            ])
             ->get()
-            ->map(function($publicite) {
-                $publicite->taux_conversion = $publicite->vues_count > 0 ? 
-                    ($publicite->clics_count / $publicite->vues_count) * 100 : 0;
+            ->map(function ($publicite) {
+                $publicite->taux_conversion = $publicite->total_vues > 0 ?
+                    ($publicite->total_clics / $publicite->total_vues) * 100 : 0;
                 return $publicite;
             });
+
+        Log::info('Performances Publicités: ', $performancesPublicites->toArray());
+
 
         return view('dashboard.pages.annonceur.publicites.rapports', compact(
             'statsGlobales',
@@ -191,7 +209,7 @@ class AnnonceurController extends Controller
     // Historique des paiements
     public function historiquePaiements(Request $request)
     {
-        $annonceur = auth()->user();
+        $annonceur = auth()->user() ?? Annonceur::first();
         $query = $annonceur->paiementsAnnonceur()->with('forfait');
 
         // Filtres
@@ -223,7 +241,7 @@ class AnnonceurController extends Controller
     // Détails d'un paiement
     public function showPaiement($id)
     {
-        $annonceur = auth()->user();
+        $annonceur = auth()->user() ?? Annonceur::first();
         $paiement = $annonceur->paiementsAnnonceur()
             ->with(['forfait', 'demandesRemboursement'])
             ->findOrFail($id);
@@ -234,7 +252,7 @@ class AnnonceurController extends Controller
     // Formulaire création demande de remboursement
     public function createRemboursement()
     {
-        $annonceur = auth()->user();
+        $annonceur = auth()->user() ?? Annonceur::first();
         
         $paiementsRemboursables = $annonceur->paiementsAnnonceur()
             ->where('statut', PaiementAnnonceur::STATUT_PAYE)
@@ -260,7 +278,7 @@ class AnnonceurController extends Controller
             'preuves.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:5120'
         ]);
 
-        $annonceur = auth()->user();
+        $annonceur = auth()->user() ?? Annonceur::first();
 
         return DB::transaction(function () use ($request, $annonceur) {
             $paiement = $annonceur->paiementsAnnonceur()->findOrFail($request->paiement_annonceur_id);

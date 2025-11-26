@@ -15,7 +15,7 @@ class PublicitesSeeder extends Seeder
         $medias = Media::all();
         $forfaits = Forfait::all();
         $annonceurs = Annonceur::all();
-        $statuts = ['brouillon','en_attente_paiement','en_attente_validation','approuve','rejete'];
+        $statuts = ['brouillon','en_attente_paiement','en_attente_validation','rejete'];
         $fichier = 'publicites/image.jpg';
         $totalPubs = 0;
 

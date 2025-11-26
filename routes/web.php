@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\PubliciteController;
 use App\Http\Controllers\Admin\PaiementController;
 use App\Http\Controllers\Admin\AnnonceurController as AdminAnnonceurController;
 use App\Http\Controllers\Annonceur\AnnonceurController as UserAnnonceurController;
+use App\Http\Controllers\Auth\AuthController;
 
 
 use App\Http\Controllers\Admin\RemboursementAnnonceurController;
@@ -13,13 +14,13 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/', function () {
-    return view('dashboard.pages.admin.home');
-});
 
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Authentication Routes
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 /*
 |--------------------------------------------------------------------------
@@ -177,24 +178,21 @@ Route::prefix('annonceur')->name('annonceur.')->group(function () {
 | Médias
 |--------------------------------------------------------------------------
 */
+// Routes pour les médias
 Route::prefix('media')->name('media.')->group(function () {
-
-    Route::get('/dashboard', function () {
-        return 'Dashboard Médias';
-    })->name('dashboard');
-
-    Route::get('/rapports', function () {
-        return 'Rapports médias';
-    })->name('rapports');
-
-    Route::prefix('paiements')->name('paiements.')->group(function () {
-
-        Route::get('/historique', function () {
-            return 'Historique des paiements média';
-        })->name('historique');
-
-        Route::get('/reclamation', function () {
-            return 'Réclamer un paiement média';
-        })->name('reclamation');
-    });
+    // Dashboard
+    Route::get('/dashboard', [MediaController::class, 'dashboard'])->name('dashboard');
+    
+    // Rapports et statistiques
+    Route::get('/rapports', [MediaController::class, 'rapports'])->name('rapports');
+    Route::get('/rapports/detail/{publicite}', [MediaController::class, 'rapportDetail'])->name('rapports.detail');
+    
+    // Paiements
+    Route::get('/paiements/historique', [MediaPaiementController::class, 'historique'])->name('paiements.historique');
+    Route::get('/paiements/reclamation', [MediaPaiementController::class, 'reclamation'])->name('paiements.reclamation');
+    Route::post('/paiements/demander', [MediaPaiementController::class, 'demanderPaiement'])->name('paiements.demander');
+    Route::get('/paiements/detail/{paiement}', [MediaPaiementController::class, 'detailPaiement'])->name('paiements.detail');
+    
+    // API pour graphiques
+    Route::get('/api/statistiques', [MediaController::class, 'apiStatistiques'])->name('api.statistiques');
 });

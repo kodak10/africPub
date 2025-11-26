@@ -11,8 +11,8 @@ class VuesPublicitesSeeder extends Seeder
 {
     public function run(): void
     {
-        $publicites = Publicite::all();
-        $medias = Media::all();
+        $publicites = Publicite::where('statut', 'validé')->get();
+        $medias = Media::where('statut', 'validé')->get();
 
         foreach ($publicites as $pub) {
             $assignedMedias = $pub->medias;

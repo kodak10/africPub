@@ -185,7 +185,6 @@ class Media extends Model
         ];
     }
 
-    // CORRECTION : Détection de fraude avancée avec les données réelles
     public function analyserFraudeAvancee()
     {
         $raisons = [];

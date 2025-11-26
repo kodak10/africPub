@@ -10,7 +10,7 @@ class ClicsPublicitesSeeder extends Seeder
 {
     public function run(): void
     {
-        $publicites = Publicite::all();
+        $publicites = Publicite::where('statut', 'validé')->get();
 
         foreach ($publicites as $pub) {
             $assignedMedias = $pub->medias;

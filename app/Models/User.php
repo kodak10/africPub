@@ -48,4 +48,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function media()
+    {
+        return $this->hasOne(Media::class);
+    }
+
+    public function annonceur()
+    {
+        return $this->hasOne(Annonceur::class, 'email', 'email');
+    }
 }

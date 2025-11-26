@@ -111,11 +111,13 @@
                                 </span>
                             </td>
                             <td>
-                                <strong class="text-info">{{ number_format($publicite->vues_count) }}</strong>
+                                <strong class="text-info">{{ number_format($publicite->total_vues) }}</strong>
                             </td>
                             <td>
-                                <strong class="text-success">{{ number_format($publicite->clics_count) }}</strong>
+                                <strong class="text-success">{{ number_format($publicite->total_clics) }}</strong>
                             </td>
+                            
+
                             
                             
                         </tr>

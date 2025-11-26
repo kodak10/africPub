@@ -26,7 +26,8 @@
     </div>
 </div>
 
-<!-- FILTRES -->
+<div class="container mt-4">
+    <!-- FILTRES -->
 <div class="card mb-4">
     <div class="card-body">
         <form method="GET" action="{{ route('annonceur.index_publicites') }}" class="row g-3">
@@ -47,10 +48,13 @@
                     <option value="">Tous les forfaits</option>
                     @foreach($forfaits as $forfait)
                         <option value="{{ $forfait->id }}" {{ request('forfait_id') == $forfait->id ? 'selected' : '' }}>
-                            {{ $forfait->libelle }}
+                            {{ $forfait->libelle }} 
+                            — {{ number_format($forfait->objectif_vues, 0, ',', ' ') }} vues 
+                            — {{ number_format($forfait->montant, 0, ',', ' ') }} FCFA
                         </option>
                     @endforeach
                 </select>
+
             </div>
             <div class="col-md-2 d-flex align-items-end">
                 <button type="submit" class="btn btn-primary w-100">
@@ -108,7 +112,7 @@
                             </td>
                             <td>
                                 <div>
-                                    <strong>{{ $publicite->forfait->libelle }}</strong>
+                                    <strong>{{ $publicite->forfait->libelle }} - {{ number_format($publicite->forfait->objectif_vues, 0, ',', ' ') }} Vue</strong>
                                     <br>
                                     <small class="text-muted">{{ number_format($publicite->forfait->montant, 0, ',', ' ') }} FCFA</small>
                                 </div>
@@ -117,27 +121,27 @@
                                 @switch($publicite->statut)
                                     @case('brouillon')
                                         <span class="badge bg-secondary">
-                                            <i class="material-icons me-1">draft</i>Brouillon
+                                            Brouillon
                                         </span>
                                         @break
                                     @case('en_attente_validation')
                                         <span class="badge bg-warning">
-                                            <i class="material-icons me-1">schedule</i>En attente
+                                            En attente
                                         </span>
                                         @break
                                     @case('validé')
                                         <span class="badge bg-success">
-                                            <i class="material-icons me-1">check_circle</i>Validé
+                                            Validé
                                         </span>
                                         @break
                                     @case('suspendu')
                                         <span class="badge bg-danger">
-                                            <i class="material-icons me-1">pause_circle</i>Suspendu
+                                            Suspendu
                                         </span>
                                         @break
                                     @case('rejete')
                                         <span class="badge bg-danger">
-                                            <i class="material-icons me-1">cancel</i>Rejeté
+                                            Rejeté
                                         </span>
                                         @break
                                     @default
@@ -202,6 +206,7 @@
             </div>
         @endif
     </div>
+</div>
 </div>
 
 @endsection

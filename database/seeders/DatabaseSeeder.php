@@ -17,16 +17,16 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RolesSeeder::class,
-            UsersSeeder::class,
+            // UsersSeeder::class,
             ForfaitsSeeder::class,
-            PublicitesSeeder::class,
-            PubliciteMediaSeeder::class,
-            VuesPublicitesSeeder::class,
-            ClicsPublicitesSeeder::class,
-            DemandesPaiementSeeder::class,
-            PaiementAnnonceurSeeder::class,
-            PaiementMediaSeeder::class,
-            DemandesRemboursementSeeder::class,
+            // PublicitesSeeder::class,
+            // PubliciteMediaSeeder::class,
+            // VuesPublicitesSeeder::class,
+            // ClicsPublicitesSeeder::class,
+            // DemandesPaiementSeeder::class,
+            // PaiementAnnonceurSeeder::class,
+            // PaiementMediaSeeder::class,
+            // DemandesRemboursementSeeder::class,
             
         ]);
     }

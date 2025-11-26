@@ -37,19 +37,20 @@ class Publicite extends Model
             ->withTimestamps();
     }
 
-    public function vues()
+     public function vues()
     {
-        return $this->hasMany(VuePublicite::class);
+        return $this->hasMany(VuePublicite::class, 'publicite_id');
     }
-    
 
+    // Relation avec les clics (si vous avez une table clics_publicites)
     public function clics()
     {
-        return $this->hasMany(ClicPublicite::class);
+        return $this->hasMany(ClicPublicite::class, 'publicite_id');
     }
 
-    public function historiquePaiements()
+    // Scope pour les publicités actives
+    public function scopeActive($query)
     {
-        return $this->hasMany(HistoriquePaiement::class);
+        return $query->where('statut', 'validé');
     }
 }

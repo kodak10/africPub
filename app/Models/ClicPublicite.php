@@ -19,6 +19,10 @@ class ClicPublicite extends Model
         'date_clic',
     ];
 
+    protected $casts = [
+        'date_vue' => 'datetime'
+    ];
+
     public function publicite()
     {
         return $this->belongsTo(Publicite::class);

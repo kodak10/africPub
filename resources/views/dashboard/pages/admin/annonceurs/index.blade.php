@@ -102,10 +102,27 @@
                         </div>
                     </div>
                     <div class="col-md-4 text-end">
-                        <span class="badge {{ $annonceur->actif ? 'bg-success' : 'bg-warning' }} fs-6 p-2">
-                            {{ $annonceur->actif ? '✓ Compte Validé' : '⏳ En attente' }}
+                        @php
+                            $badgeClass = match($annonceur->statut) {
+                                'validé' => 'bg-success',
+                                'en_attente' => 'bg-warning',
+                                'suspendu' => 'bg-danger',
+                                default => 'bg-secondary',
+                            };
+
+                            $badgeText = match($annonceur->statut) {
+                                'validé' => '✓ Compte Validé',
+                                'en_attente' => '⏳ En attente de validation',
+                                'suspendu' => '❌ Compte Suspendu',
+                                default => 'Statut inconnu',
+                            };
+                        @endphp
+
+                        <span class="badge {{ $badgeClass }} fs-6 p-2">
+                            {{ $badgeText }}
                         </span>
                     </div>
+
                 </div>
 
                 <!-- Nav pills -->
@@ -238,7 +255,7 @@
                                     <div class="card bg-success text-white">
                                         <div class="card-body">
                                             <i class="material-icons mb-2">check_circle</i>
-                                            <h3>{{ $annonceur->publicites->where('statut', 'approuve')->count() }}</h3>
+                                            <h3>{{ $annonceur->publicites->where('statut', 'validé')->count() }}</h3>
                                             <p class="mb-0">Publicités actives</p>
                                         </div>
                                     </div>

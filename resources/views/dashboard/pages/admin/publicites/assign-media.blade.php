@@ -34,7 +34,9 @@
                         <option value="">--Tous--</option>
                         @foreach($forfaits as $forfait)
                             <option value="{{ $forfait->id }}" {{ request('forfait_id') == $forfait->id ? 'selected' : '' }}>
-                                {{ $forfait->libelle }} ({{ $forfait->montant }} FCFA)
+                                {{ $forfait->libelle }} 
+                                — {{ number_format($forfait->objectif_vues, 0, ',', ' ') }} vues 
+                                — {{ number_format($forfait->montant, 0, ',', ' ') }} FCFA
                             </option>
                         @endforeach
                     </select>
@@ -73,7 +75,7 @@
                         <th>Titre</th>
                         <th>Annonceur</th>
                         <th>Statut</th>
-                        <th>Vues</th>
+                        <th>Vues Actuelles</th>
                         <th>Objectif</th>
                         <th>Actions</th>
                     </tr>
@@ -89,7 +91,7 @@
                             <td>
                                 <!-- Bouton pour ouvrir le modal d'affectation des médias -->
                                 <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#assignMediaModal{{ $publicite->id }}">
-                                    Affecter des Médias
+                                    Affecter à des Médias
                                 </button>
                             </td>
                         </tr>

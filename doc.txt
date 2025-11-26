@@ -1,0 +1,10 @@
+<select name="forfait_id" class="form-select">
+    <option value="">Tous les forfaits</option>
+    @foreach($forfaits as $forfait)
+        <option value="{{ $forfait->id }}" {{ request('forfait_id') == $forfait->id ? 'selected' : '' }}>
+            {{ $forfait->libelle }} 
+            — {{ number_format($forfait->objectif_vues, 0, ',', ' ') }} vues 
+            — {{ number_format($forfait->montant, 0, ',', ' ') }} FCFA
+        </option>
+    @endforeach
+</select>

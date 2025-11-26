@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('media_path'); // chemin fichier media
             $table->string('url_cible');
             $table->foreignId('forfait_id')->constrained('forfaits')->onDelete('cascade');
-            $table->enum('statut', ['brouillon', 'en_attente_paiement', 'en_attente_validation', 'approuve', 'rejete', 'validé', 'suspendu'])->default('brouillon');
+            $table->enum('statut', ['brouillon', 'en_attente_paiement', 'en_attente_validation', 'rejete', 'validé', 'suspendu'])->default('brouillon');
             $table->timestamps();
             $table->softDeletes();
 

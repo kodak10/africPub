@@ -49,23 +49,23 @@
                 </select>
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-1">
                 <label>Vues min</label>
                 <input type="number" name="min_vues" class="form-control" value="{{ request('min_vues') }}">
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-1">
                 <label>Vues max</label>
                 <input type="number" name="max_vues" class="form-control" value="{{ request('max_vues') }}">
             </div>
 
+            
             <div class="col-md-2">
-                <label>Période</label>
-                <input type="text" name="periode_start" placeholder="Start YYYY-MM-DD" class="form-control" value="{{ request('periode_start') }}">
-                <input type="text" name="periode_end" placeholder="End YYYY-MM-DD" class="form-control mt-1" value="{{ request('periode_end') }}">
-            </div>
-            <div class="col-md-12 mt-2">
+                
                 <button type="submit" class="btn btn-primary">Rechercher</button>
+            </div>
+            <div class="col-md-2">
+                
                 <a href="{{ route('admin.publicites.index') }}" class="btn btn-secondary">Réinitialiser</a>
             </div>
         </form>
@@ -82,6 +82,7 @@
         <table class="table table-bordered" id="datatablePublicites">
             <thead>
                 <tr>
+                    <th>Date</th>
                     <th>Titre</th>
                     <th>Média</th>
                     <th>Annonceur</th>
@@ -92,13 +93,14 @@
             <tbody>
                 @foreach($publicites as $pub)
                     <tr>
+                        <td>{{ $pub->created_at }}</td>
                         <td>{{ $pub->titre }}</td>
                         <td>
                             @foreach($pub->medias as $m)
                                 <span class="badge bg-info">{{ $m->nom_du_media }}</span>
                             @endforeach
                         </td>
-                        <td>{{ $pub->annonceur->name }}</td>
+                        <td>{{ $pub->annonceur->nom }}</td>
                         <td>
                             <span class="badge 
                                 @if($pub->statut=='validé') bg-success
@@ -111,6 +113,7 @@
                             <!-- Preview modal -->
                             <a href="#" data-bs-toggle="modal" data-bs-target="#modalPub{{ $pub->id }}" class="btn btn-sm btn-info">Preview</a>
 
+                            
                             <!-- Boutons pour changer le statut -->
                             @if($pub->statut == 'brouillon' || $pub->statut == 'en_attente_paiement' || $pub->statut == 'en_attente_validation')
                                 <!-- Si la publicité est en "brouillon", "en_attente_paiement" ou "en_attente_validation", afficher les boutons -->
@@ -120,10 +123,15 @@
                                 <a href="{{ route('admin.publicites.change-status', [$pub->id, 'suspendu']) }}" class="btn btn-sm btn-warning">
                                     Suspendre
                                 </a>
-                            @elseif($pub->statut == 'approuve')
-                                <!-- Si la publicité est "approuvée", afficher uniquement le bouton suspendre -->
+                            @elseif($pub->statut == 'validé')
+                                <!-- Si la publicité est "validée", afficher uniquement le bouton suspendre -->
                                 <a href="{{ route('admin.publicites.change-status', [$pub->id, 'suspendu']) }}" class="btn btn-sm btn-warning">
                                     Suspendre
+                                </a>
+                            @elseif($pub->statut == 'suspendu')
+                                <!-- Si la publicité est "suspendue", afficher uniquement le bouton valider -->
+                                <a href="{{ route('admin.publicites.change-status', [$pub->id, 'validé']) }}" class="btn btn-sm btn-success">
+                                    Réactiver / Valider
                                 </a>
                             @elseif($pub->statut == 'rejete')
                                 <!-- Si la publicité est "rejetée", afficher uniquement le bouton valider -->
@@ -131,7 +139,6 @@
                                     Valider
                                 </a>
                             @endif
-
 
                         </td>
                     </tr>

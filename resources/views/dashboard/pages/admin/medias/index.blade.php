@@ -63,17 +63,17 @@
 
                         <td>
                             <!-- Voir détails -->
-                            <a href="#" class="text-info me-2" data-bs-toggle="modal"
+                            <a href="#" title="Voir les informations" class="text-info me-2" data-bs-toggle="modal"
                                 data-bs-target="#modalMedia{{ $media->id }}">
                                 <i class="material-icons">visibility</i>
                             </a>
 
                             @if($media->statut !== 'validé')
-                                <a href="{{ route('admin.medias.toggle-status', [$media->id, 'validate']) }}" class="text-success me-2">
+                                <a href="{{ route('admin.medias.toggle-status', [$media->id, 'validate']) }}" title="Valider" class="text-success me-2">
                                     <i class="material-icons">check_circle</i>
                                 </a>
                             @else
-                                <a href="{{ route('admin.medias.toggle-status', [$media->id, 'suspend']) }}" class="text-warning me-2">
+                                <a href="{{ route('admin.medias.toggle-status', [$media->id, 'suspend']) }}" title="Suspendre" class="text-warning me-2">
                                     <i class="material-icons">pause_circle</i>
                                 </a>
                             @endif

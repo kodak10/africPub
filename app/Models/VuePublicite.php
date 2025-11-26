@@ -19,6 +19,10 @@ class VuePublicite extends Model
         'date_vue',
     ];
 
+    protected $casts = [
+        'date_vue' => 'datetime'
+    ];
+
     public function publicite()
     {
         return $this->belongsTo(Publicite::class);

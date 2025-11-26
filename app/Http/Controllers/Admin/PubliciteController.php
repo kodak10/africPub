@@ -19,56 +19,39 @@ class PubliciteController extends Controller
 public function index(Request $request)
 {
     $medias = Media::all();
-    $annonceurs = Annonceur::where('actif', 1)->get();
+    $annonceurs = Annonceur::where('statut', 'validé')->get();
 
     $query = Publicite::query()->with(['annonceur','medias']);
 
     // Filtres
     if ($request->filled('statut')) {
         $query->where('statut', $request->statut);
-        Log::info('Filtre statut appliqué', ['statut' => $request->statut]);
     }
     if ($request->filled('media_id')) {
         $query->whereHas('medias', function($q) use ($request){
             $q->where('media_id', $request->media_id);
         });
-        Log::info('Filtre media_id appliqué', ['media_id' => $request->media_id]);
     }
     if ($request->filled('annonceur_id')) {
         $query->where('annonceur_id', $request->annonceur_id);
-        Log::info('Filtre annonceur_id appliqué', ['annonceur_id' => $request->annonceur_id]);
     }
     if ($request->filled('min_vues')) {
         $query->whereHas('vues', function($q) use ($request){
             $q->havingRaw('COUNT(*) >= ?', [$request->min_vues]);
         });
-        Log::info('Filtre min_vues appliqué', ['min_vues' => $request->min_vues]);
     }
     if ($request->filled('max_vues')) {
         $query->whereHas('vues', function($q) use ($request){
             $q->havingRaw('COUNT(*) <= ?', [$request->max_vues]);
         });
-        Log::info('Filtre max_vues appliqué', ['max_vues' => $request->max_vues]);
-    }
-    if ($request->filled('periode_start') && $request->filled('periode_end')) {
-        $query->whereBetween('created_at', [
-            $request->periode_start . ' 00:00:00',
-            $request->periode_end . ' 23:59:59'
-        ]);
-        Log::info('Filtre période appliqué', [
-            'start' => $request->periode_start,
-            'end' => $request->periode_end
-        ]);
     }
 
     // Vérifie si au moins un filtre est rempli
     $hasSearch = $request->filled('statut') || $request->filled('media_id') || $request->filled('annonceur_id')
                  || $request->filled('min_vues') || $request->filled('max_vues')
                  || ($request->filled('periode_start') && $request->filled('periode_end'));
-    Log::info('Recherche activée ?', ['hasSearch' => $hasSearch]);
 
     $publicites = $hasSearch ? $query->get() : collect();
-    Log::info('Nombre de publicités trouvées', ['count' => $publicites->count()]);
 
     return view('dashboard.pages.admin.publicites.index', compact('publicites','medias','annonceurs'));
 }
@@ -77,34 +60,44 @@ public function index(Request $request)
 
   public function changeStatus(Request $request, $id, $status)
 {
+    // Récupérer la publicité
     $pub = Publicite::findOrFail($id);
 
-    // Vérifie si le statut est valide (parmi ceux existants dans l'énumération)
-    $validStatuses = ['brouillon', 'en_attente_paiement', 'en_attente_validation', 'approuve', 'rejete'];
+    // Vérifie si le statut demandé est valide
+    $validStatuses = ['brouillon', 'en_attente_paiement', 'en_attente_validation', 'validé', 'rejete', 'approuve', 'suspendu'];
 
-    if (!in_array($pub->statut, $validStatuses)) {
+    if (!in_array($status, $validStatuses)) {
         return redirect()->route('admin.publicites.index', $request->query())
-                         ->with('error', 'Changement de statut non autorisé!');
+                         ->with('error', 'Statut non valide pour ce changement!');
     }
 
-    // Validation ou suspension, selon l'action
+    // Changer le statut en fonction de l'action
     if ($status == 'validé') {
-        // Si la publicité est en "brouillon", "en_attente_validation", "en_attente_paiement", on peut la valider
-        if (in_array($pub->statut, ['brouillon', 'en_attente_validation', 'en_attente_paiement'])) {
-            $pub->statut = 'approuve';  // On la valide en la marquant "approuvé"
+        // Si la publicité est en 'brouillon', 'en_attente_validation', ou 'en_attente_paiement', on peut la valider
+        if (in_array($pub->statut, ['brouillon', 'en_attente_paiement', 'en_attente_validation'])) {
+            $pub->statut = 'validé';  // Marquer comme 'validé'
+        } else {
+            return redirect()->route('admin.publicites.index', $request->query())
+                             ->with('error', 'La publicité ne peut pas être validée dans son état actuel.');
         }
     } elseif ($status == 'suspendu') {
-        // On suspend la publicité
-        $pub->statut = 'rejete';  // On marque la publicité comme "rejete" (suspendu)
+        // Suspendre la publicité, ici on la marque comme 'rejete'
+        if ($pub->statut == 'validé' || $pub->statut == 'approuve') {
+            $pub->statut = 'rejete';  // Marquer comme 'rejete' pour suspendre
+        } else {
+            return redirect()->route('admin.publicites.index', $request->query())
+                             ->with('error', 'La publicité ne peut pas être suspendue dans son état actuel.');
+        }
     }
 
     // Sauvegarder la modification
     $pub->save();
 
-    // Redirige avec les mêmes paramètres de recherche
+    // Rediriger avec un message de succès
     return redirect()->route('admin.publicites.index', $request->query())
-                     ->with('success', "Publicité mise à jour : $status");
+                     ->with('success', "Le statut de la publicité a été mis à jour avec succès : $status");
 }
+
 
 
 
@@ -117,7 +110,7 @@ public function assignMediaToPublicite(Request $request)
     $pourcentage = $request->input('pourcentage'); // Pourcentage basé sur les vues
 
     // Récupérer toutes les publicités approuvées en fonction des filtres
-    $query = Publicite::where('statut', 'approuve');
+    $query = Publicite::where('statut', 'validé');
 
     // Filtrage par Annonceur
     if ($annonceurId) {
@@ -143,8 +136,8 @@ public function assignMediaToPublicite(Request $request)
     $publicites = $query->get();
 
     // Charger tous les médias disponibles, annonceurs et forfaits
-    $medias = Media::all();
-    $annonceurs = Annonceur::all();
+    $medias = Media::where('statut', 'validé')->get();
+    $annonceurs = Annonceur::where('statut', 'validé')->get();
     $forfaits = Forfait::all(); // Récupérer tous les forfaits
 
     // Ajouter le nombre de vues et l'objectif de vues à chaque publicité
