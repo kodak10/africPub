@@ -84,4 +84,10 @@ class PaiementAnnonceur extends Model
     {
         return $this->belongsTo(Forfait::class);
     }
+
+    public function demandesRemboursement()
+    {
+        return $this->hasMany(DemandeRemboursementAnnonceur::class, 'paiement_annonceur_id');
+    }
+
 }

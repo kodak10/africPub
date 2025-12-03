@@ -228,7 +228,7 @@
                                 <div class="card bg-success text-white">
                                     <div class="card-body">
                                         <i class="material-icons mb-2">payments</i>
-                                        <h3>{{ number_format($media->revenu_actuel, 0, ',', ' ') }}</h3>
+                                        <h3>{{ number_format($media->revenu_actuel, 0, ',', ' ') }} FCFA</h3>
                                         <p>Revenu</p>
                                     </div>
                                 </div>

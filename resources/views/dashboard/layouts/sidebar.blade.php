@@ -2,8 +2,9 @@
     <div class="sidebar-compact-switch"><span></span><div></div><span></span></div>
 
     <div class="brand">
-        <img src="../assets/images/arctic-admin-circle.svg" alt="">
-        <span class="app-logo-text ms-2 text-20">Afric-Pub</span>
+        <img src="{{asset('assets/images/logo.jpg')}}" style="height: 60px; width:100%" alt="">
+        <span class="app-logo-text text-20" style="margin-left: 50px;"></span>
+
     </div>
 
     <div class="scroll-nav" data-perfect-scrollbar data-suppress-scroll-x="true">
@@ -11,24 +12,32 @@
         <!-- User section -->
         <div class="app-user text-center">
             <div class="app-user-photo">
-                <img src="../assets/images/faces/1.jpg" alt="">
+                <img src="{{ Auth::user()->profile_photo_url ?? asset('assets/images/faces/default.jpg') }}" alt="{{ Auth::user()->name }}">
             </div>
             <div class="app-user-info">
-                <span class="app-user-name">Watson Joyce</span>
+                <span class="app-user-name">{{ Auth::user()->name }}</span>
 
-                <div class="app-user-control">
-                    <a class="control-item" href="#">
+                <div class="app-user-control d-flex justify-content-between w-100">
+                    {{-- Paramètres --}}
+                    <a class="control-item" href="">
                         <i class="material-icons">settings</i>
                     </a>
-                    <a class="control-item" href="#">
-                        <i class="material-icons">email</i>
-                    </a>
-                    <a class="control-item" href="#">
+
+                    {{-- Déconnexion --}}
+                    <a class="control-item" href="{{ route('logout') }}"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <i class="material-icons">logout</i>
                     </a>
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
                 </div>
             </div>
         </div>
+
+
+       
 
         <!-- Sidebar Navigation -->
         <div class="side-nav">
@@ -36,29 +45,36 @@
                 <nav class="sidebar-nav">
                     <ul class="metismenu show-on-load" id="ul-menu">
 
-                        <!-- Dashboards -->
+                        {{-- DASHBOARD PAR RÔLE --}}
+                        @role('Admin')
                         <li class="{{ request()->routeIs('admin.dashboard') ? 'mm-active' : '' }}">
                             <a href="{{ route('admin.dashboard') }}">
                                 <i class="material-icons nav-icon">dashboard</i>
                                 Dashboard | Administrateurs
                             </a>
                         </li>
+                        @endrole
 
+                        @role('Annonceur')
                         <li class="{{ request()->routeIs('annonceur.dashboard') ? 'mm-active' : '' }}">
                             <a href="{{ route('annonceur.dashboard') }}">
                                 <i class="material-icons nav-icon">dashboard_customize</i>
                                 Dashboard | Annonceurs
                             </a>
                         </li>
+                        @endrole
 
+                        @role('Media')
                         <li class="{{ request()->routeIs('media.dashboard') ? 'mm-active' : '' }}">
                             <a href="{{ route('media.dashboard') }}">
                                 <i class="material-icons nav-icon">monitor</i>
                                 Dashboard | Médias
                             </a>
                         </li>
+                        @endrole
 
-                        <!-- ADMIN -->
+                        {{-- MENU ADMIN --}}
+                        @role('Admin')
                         <span class="main-menu-title">Administrateurs</span>
 
                         <li class="{{ request()->routeIs('admin.medias.index') || request()->routeIs('admin.annonceurs.index') ? 'mm-active' : '' }}">
@@ -95,7 +111,7 @@
 
                         <li class="{{ request()->routeIs('admin.paiements.index') || request()->routeIs('admin.paiements.historique') ? 'mm-active' : '' }}">
                             <a class="has-arrow" href="#">
-                                <i class="material-icons nav-icon">payments</i>Paiements
+                                <i class="material-icons nav-icon">payments</i>Paiements aux Medias
                             </a>
                             <ul class="mm-collapse">
                                 <li class="{{ request()->routeIs('admin.paiements.index') ? 'mm-active' : '' }}">
@@ -117,14 +133,16 @@
                             </a>
                         </li>
 
-                        <li class="{{ request()->routeIs('admin.rapport_financier') ? 'mm-active' : '' }}">
-                            <a href="{{ route('admin.rapport_financier') }}">
+                        <li class="{{ request()->routeIs('admin.rapports') ? 'mm-active' : '' }}">
+                            <a href="{{ route('admin.rapports') }}">
                                 <i class="material-icons nav-icon">assessment</i>
                                 Rapport financier
                             </a>
                         </li>
+                        @endrole
 
-                        <!-- ANNONCEURS -->
+                        {{-- MENU ANNONCEUR --}}
+                        @role('Annonceur')
                         <span class="main-menu-title">Annonceurs</span>
 
                         <li class="{{ request()->routeIs('annonceur.create_publicites') ? 'mm-active' : '' }}">
@@ -160,8 +178,10 @@
                                 </li>
                             </ul>
                         </li>
+                        @endrole
 
-                        <!-- MEDIAS -->
+                        {{-- MENU MEDIA --}}
+                        @role('Media')
                         <span class="main-menu-title">Médias</span>
 
                         <li class="{{ request()->routeIs('media.rapports') ? 'mm-active' : '' }}">
@@ -187,11 +207,13 @@
                                 </li>
                             </ul>
                         </li>
+                        @endrole
 
                     </ul>
                 </nav>
             </div>
         </div>
+
 
     </div>
 </div>

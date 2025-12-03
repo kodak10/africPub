@@ -21,7 +21,7 @@ public function index(Request $request)
     $medias = Media::all();
     $annonceurs = Annonceur::where('statut', 'validé')->get();
 
-    $query = Publicite::query()->with(['annonceur','medias']);
+    $query = Publicite::with(['annonceur','medias']);
 
     // Filtres
     if ($request->filled('statut')) {
@@ -35,26 +35,21 @@ public function index(Request $request)
     if ($request->filled('annonceur_id')) {
         $query->where('annonceur_id', $request->annonceur_id);
     }
-    if ($request->filled('min_vues')) {
-        $query->whereHas('vues', function($q) use ($request){
-            $q->havingRaw('COUNT(*) >= ?', [$request->min_vues]);
-        });
-    }
-    if ($request->filled('max_vues')) {
-        $query->whereHas('vues', function($q) use ($request){
-            $q->havingRaw('COUNT(*) <= ?', [$request->max_vues]);
-        });
-    }
 
     // Vérifie si au moins un filtre est rempli
-    $hasSearch = $request->filled('statut') || $request->filled('media_id') || $request->filled('annonceur_id')
-                 || $request->filled('min_vues') || $request->filled('max_vues')
-                 || ($request->filled('periode_start') && $request->filled('periode_end'));
+    $hasSearch = $request->filled('statut') || $request->filled('media_id') || $request->filled('annonceur_id');
 
-    $publicites = $hasSearch ? $query->get() : collect();
+    // Récupère les publicités filtrées ou les 10 dernières par défaut avec pagination
+    $publicites = $hasSearch
+        ? $query->paginate(10)->withQueryString()
+        : Publicite::with(['annonceur','medias'])
+            ->orderByDesc('created_at')
+            ->paginate(10);
 
     return view('dashboard.pages.admin.publicites.index', compact('publicites','medias','annonceurs'));
 }
+
+
 
 
 

@@ -17,10 +17,9 @@
                 <label>Statut</label>
                 <select name="statut" class="form-select">
                     <option value="">--Tous--</option>
-                    <option value="brouillon" {{ request('statut')=='brouillon' ? 'selected' : '' }}>Brouillon</option>
                     <option value="en_attente_paiement" {{ request('statut')=='en_attente_paiement' ? 'selected' : '' }}>En attente de paiement</option>
                     <option value="en_attente_validation" {{ request('statut')=='en_attente_validation' ? 'selected' : '' }}>En attente de validation</option>
-                    <option value="approuve" {{ request('statut')=='approuve' ? 'selected' : '' }}>Approuvé</option>
+                    <option value="validé" {{ request('statut')=='validé' ? 'selected' : '' }}>Validé</option>
                     <option value="rejete" {{ request('statut')=='rejete' ? 'selected' : '' }}>Rejeté</option>
                 </select>
             </div>
@@ -170,6 +169,10 @@
                 @endforeach
             </tbody>
         </table>
+        <!-- Liens de pagination Bootstrap -->
+        <div class="mt-3">
+            {{ $publicites->links('pagination::bootstrap-5') }}
+        </div>
     </div>
 </div>
 </div>

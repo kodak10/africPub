@@ -18,7 +18,7 @@ class AnnonceurController extends Controller
     // Dashboard annonceur
     public function dashboard()
     {
-        $annonceur = auth()->user() ?? Annonceur::first(); // Pour test sans auth
+        $annonceur = auth()->user();
         
         // Statistiques
         $totalPublicites = $annonceur->publicites()->count();
@@ -63,7 +63,7 @@ class AnnonceurController extends Controller
     // Liste des publicités
     public function publicites(Request $request)
     {
-        $annonceur = auth()->user() ?? Annonceur::first();
+        $annonceur = auth()->user();
 
         $query = $annonceur->publicites()->with(['forfait', 'medias']);
 
@@ -85,7 +85,7 @@ class AnnonceurController extends Controller
     // Détails d'une publicité
     public function showPublicite($id)
     {
-        $annonceur = auth()->user() ?? Annonceur::first();
+        $annonceur = auth()->user();
 
         $publicite = $annonceur->publicites()
             ->with(['forfait', 'medias', 'vues', 'clics'])
@@ -154,7 +154,7 @@ class AnnonceurController extends Controller
     // Rapports et statistiques
     public function rapports(Request $request)
     {
-        $annonceur = auth()->user() ?? Annonceur::first();
+        $annonceur = auth()->user();
         
         // Période par défaut : 30 derniers jours
         $dateDebut = $request->filled('date_debut') ? $request->date_debut : now()->subDays(30)->format('Y-m-d');
@@ -209,7 +209,7 @@ class AnnonceurController extends Controller
     // Historique des paiements
     public function historiquePaiements(Request $request)
     {
-        $annonceur = auth()->user() ?? Annonceur::first();
+        $annonceur = auth()->user();
         $query = $annonceur->paiementsAnnonceur()->with('forfait');
 
         // Filtres
@@ -241,7 +241,7 @@ class AnnonceurController extends Controller
     // Détails d'un paiement
     public function showPaiement($id)
     {
-        $annonceur = auth()->user() ?? Annonceur::first();
+        $annonceur = auth()->user();
         $paiement = $annonceur->paiementsAnnonceur()
             ->with(['forfait', 'demandesRemboursement'])
             ->findOrFail($id);
@@ -252,7 +252,7 @@ class AnnonceurController extends Controller
     // Formulaire création demande de remboursement
     public function createRemboursement()
     {
-        $annonceur = auth()->user() ?? Annonceur::first();
+        $annonceur = auth()->user() ??;
         
         $paiementsRemboursables = $annonceur->paiementsAnnonceur()
             ->where('statut', PaiementAnnonceur::STATUT_PAYE)
@@ -278,7 +278,7 @@ class AnnonceurController extends Controller
             'preuves.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:5120'
         ]);
 
-        $annonceur = auth()->user() ?? Annonceur::first();
+        $annonceur = auth()->user();
 
         return DB::transaction(function () use ($request, $annonceur) {
             $paiement = $annonceur->paiementsAnnonceur()->findOrFail($request->paiement_annonceur_id);

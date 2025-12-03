@@ -15,6 +15,8 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet">
+
 </head>
 
 <body>
@@ -78,161 +80,20 @@
                 <div class="notification-item d-flex border-bottom mb-lg pb-lg px-lg"><span class="badge badge-opacity rounded-circle badge-primary me-md"><i class="material-icons">cloud_upload</i></span>
                     <div class="d-flex flex-column justify-content-center w-full">
                         <div class="d-flex align-items-center justify-content-between">
-                            <p class="font-weight-semi m-0"> <a class="link-alt" href="#">Watson uploaded a file</a></p>
+                            <p class="font-weight-semi m-0"> <a class="link-alt" href="#">Annonceur 1</a></p>
                             <p class="text-small text-muted m-0">15 min ago</p>
                         </div>
-                        <p class="text-muted text-small mb-sm">On <a href="">Project alpha</a></p>
-                        <div class="px-md py-sm gray-100 rounded"><img class="icon-sm" src="../assets/images/file-types/001-pdf.svg"><span class="text-small font-weight-semi"> <a class="text-body" href="#">progress_report.pdf</a></span></div>
+                        <p class="text-muted text-small mb-sm">On <a href="">Ajout d'une nouvelle publicité</a></p>
                     </div>
                 </div>
-                <div class="notification-item d-flex border-bottom mb-lg pb-lg px-lg"><span class="badge badge-opacity rounded-circle badge-primary me-md"><i class="material-icons">description</i></span>
-                    <div class="d-flex flex-column justify-content-center w-full">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <p class="font-weight-semi m-0"> <a class="link-alt" href="#">John commented on a task</a></p>
-                            <p class="text-small text-muted m-0">5 min ago</p>
-                        </div>
-                        <p class="text-muted text-small mb-sm">On <a href="">Project alpha</a></p>
-                        <div class="px-md py-sm gray-100 rounded"><span class="text-small">
-                                What's the progress of this project? <br>Can you send me the files?</span></div>
-                    </div>
-                </div>
-                <div class="notification-item d-flex border-bottom mb-lg pb-lg px-lg"><span class="badge badge-opacity rounded-circle badge-warning me-md"><i class="material-icons">announcement</i></span>
-                    <div class="d-flex flex-column justify-content-center w-full">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <p class="font-weight-semi m-0"> <a class="link-alt" href="#">John opened a new Topic</a></p>
-                            <p class="text-small text-muted m-0">45 min ago</p>
-                        </div>
-                        <p class="text-muted text-small mb-sm">On <a href="">Project alpha</a></p>
-                    </div>
-                </div>
-                <div class="notification-item d-flex border-bottom mb-lg pb-lg px-lg"><span class="badge badge-opacity rounded-circle badge-primary me-md"><i class="material-icons">cloud_upload</i></span>
-                    <div class="d-flex flex-column justify-content-center w-full">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <p class="font-weight-semi m-0"> <a class="link-alt" href="#">John uploaded a file</a></p>
-                            <p class="text-small text-muted m-0">15 min ago</p>
-                        </div>
-                        <p class="text-muted text-small mb-sm">On <a href="">Project alpha</a></p>
-                        <div class="px-md py-sm gray-100 rounded"><img class="icon-sm" src="../assets/images/file-types/004-xlsx.svg"><span class="text-small font-weight-semi"> <a class="text-body" href="#">budget_report.xlsx</a></span></div>
-                    </div>
-                </div>
-                <div class="notification-item d-flex border-bottom mb-lg pb-lg px-lg"><span class="badge badge-opacity rounded-circle badge-warning me-md"><i class="material-icons">announcement</i></span>
-                    <div class="d-flex flex-column justify-content-center w-full">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <p class="font-weight-semi m-0"> <a class="link-alt" href="#">John opened a new Topic</a></p>
-                            <p class="text-small text-muted m-0">45 min ago</p>
-                        </div>
-                        <p class="text-muted text-small mb-sm">On <a href="">Project alpha</a></p>
-                    </div>
-                </div>
+                
             </div>
-            <div class="px-xl py-md"><a class="btn btn-opacity btn-primary w-full">View All Notificaitons</a></div>
+            <div class="px-xl py-md"><a class="btn btn-opacity btn-primary w-full">Voir toutes les notifications</a></div>
         </div>
         <!--end::sidebar-panel-notification content-->
     </div>
     <!--end::sidebar-panel-notification-->
-    <!--Sidebar panel Profile-->
-    <div class="ul-sidebar-panel" id="asideProfile" data-position="right">
-        <div class="pt-lg pb-md px-lg">
-            <div class="ul-sidebar-panel-top mb-md">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div class="heading-label p-0">Profile</div>
-                    <div class="flex-grow-1"></div><i class="material-icons icon icon-sm hover-gray ul-sidebar-panel-close">close</i>
-                </div>
-            </div>
-            <div data-perfect-scrollbar="" data-suppress-scroll-x="true" style="height: calc(100vh - 112px)">
-                <div class="ul-sidebar-aside-profile d-flex mb-xxl align-items-center"><img class="rounded-circle avatar-lg" src="../assets/images/faces/1.jpg" alt="">
-                    <div class="ul-sidebar-aside-info ms-md"><a class="link-alt" href="#">
-                            <div class="font-weight-semi">Tim Clarkson</div>
-                        </a>
-                        <p class="text-small text-muted mb-sm">Front End Developer</p>
-                        <div class="d-flex ms--xs"><a class="link-alt" href="#"><i class="fab fa-google text-muted icon icon-xs hover-gray"></i></a><a class="link-alt" href="#"><i class="fab fa-twitter text-muted icon icon-xs hover-gray"></i></a><a class="link-alt" href="#"><i class="fab fa-facebook-f text-muted icon icon-xs hover-gray"></i></a></div>
-                    </div>
-                </div>
-                <div class="heading-label">Skills </div>
-                <div class="d-flex justify-content-between"><span class="badge rounded-circle badge-primary me-sm">A</span>
-                    <div class="flex-grow-1">
-                        <p class="font-weight-semi m-0">Angular</p>
-                        <p class="text-muted text-small">Frontend framework</p>
-                    </div>
-                    <div class="flex-grow-1">
-                        <div class="progress-wrapper mb-xl">
-                            <div class="progress-info"><span></span>
-                                <div class="progress-percentage"><span>80%</span></div>
-                            </div>
-                            <div class="progress mb-md">
-                                <div class="progress-bar bg-primary" role="progressbar" style="width: 80%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex justify-content-between"><span class="badge rounded-circle badge-primary me-sm">V</span>
-                    <div class="flex-grow-1">
-                        <p class="font-weight-semi m-0">Vue Js</p>
-                        <p class="text-muted text-small">Frontend framework</p>
-                    </div>
-                    <div class="flex-grow-1">
-                        <div class="progress-wrapper mb-xl">
-                            <div class="progress-info"><span></span>
-                                <div class="progress-percentage"><span>30%</span></div>
-                            </div>
-                            <div class="progress mb-md">
-                                <div class="progress-bar bg-danger" role="progressbar" style="width: 30%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex justify-content-between"><span class="badge rounded-circle badge-primary me-sm">R</span>
-                    <div class="flex-grow-1">
-                        <p class="font-weight-semi m-0">React </p>
-                        <p class="text-muted text-small">Frontend framework</p>
-                    </div>
-                    <div class="flex-grow-1">
-                        <div class="progress-wrapper mb-xl">
-                            <div class="progress-info"><span></span>
-                                <div class="progress-percentage"><span>50%</span></div>
-                            </div>
-                            <div class="progress mb-md">
-                                <div class="progress-bar bg-warning" role="success" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex justify-content-between"><span class="badge rounded-circle badge-primary me-sm">W</span>
-                    <div class="flex-grow-1">
-                        <p class="font-weight-semi m-0">Wordpress Website</p>
-                        <p class="text-muted text-small">CMS</p>
-                    </div>
-                    <div class="flex-grow-1">
-                        <div class="progress-wrapper mb-xl">
-                            <div class="progress-info"><span></span>
-                                <div class="progress-percentage"><span>30%</span></div>
-                            </div>
-                            <div class="progress mb-md">
-                                <div class="progress-bar bg-success" role="warning" style="width: 30%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-lg"></div>
-                <div class="heading-label">Activity</div>
-                <div class="d-flex mb-md align-items-center"><span class="badge rounded-circle badge-primary me-sm">JH</span>
-                    <div class="d-flex flex-column justify-content-center">
-                        <p class="text-small font-weight-semi m-0"> <a class="link-alt" href="#">Urgent task completed</a></p><span class="text-small text-muted">By Jhon at 3:30 PM</span>
-                    </div>
-                </div>
-                <div class="d-flex mb-md align-items-center"><span class="badge rounded-circle badge-success me-sm">W</span>
-                    <div class="d-flex flex-column justify-content-center">
-                        <p class="text-small font-weight-semi m-0"> <a class="link-alt" href="#">Task from project Alpha</a></p><span class="text-small text-muted">By Watson at 1:30 PM</span>
-                    </div>
-                </div>
-                <div class="d-flex mb-md align-items-center"><span class="badge rounded-circle badge-success me-sm">R</span>
-                    <div class="d-flex flex-column justify-content-center">
-                        <p class="text-small font-weight-semi m-0"> <a class="link-alt" href="#">Task from project Beta</a></p><span class="text-small text-muted">By Rafi at 9:30 AM</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+   
 
     <div class="ul-sidebar-panel-overlay"></div>
 
@@ -283,6 +144,8 @@
             
         });
     </script>
+
+    @yield('scripts')
 
 </body>
 

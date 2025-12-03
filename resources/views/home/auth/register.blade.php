@@ -23,6 +23,19 @@
             </ul>
         </div>
 
+        <div>
+            @if ($errors->any())
+                <div class="mb-4 p-4 text-sm text-red-700 bg-red-100 rounded-lg">
+                    <ul class="list-disc ml-5">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+        </div>
+
         <div id="myTabContent">
             <!-- Formulaire Média -->
             <div class="hidden p-4 rounded-lg bg-gray-50" id="media" role="tabpanel" aria-labelledby="media-tab">

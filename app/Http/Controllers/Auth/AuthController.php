@@ -24,6 +24,39 @@ class AuthController extends Controller
         return view('home.auth.register');
     }
 
+    // public function login(Request $request)
+    // {
+    //     $credentials = $request->validate([
+    //         'email' => 'required|email',
+    //         'password' => 'required'
+    //     ]);
+
+    //     if (Auth::attempt($credentials)) {
+    //         $request->session()->regenerate();
+            
+    //         $user = Auth::user();
+            
+    //         // Redirection basée sur le rôle
+    //         if ($user->hasRole('SuperAdmin')) {
+    //             return redirect()->route('admin.dashboard');
+    //         } elseif ($user->hasRole('Admin')) {
+    //             return redirect()->route('admin.dashboard');
+    //         } elseif ($user->hasRole('Proprietaire')) {
+    //             return redirect()->route('admin.dashboard');
+    //         } elseif ($user->hasRole('Media')) {
+    //             return redirect()->route('media.dashboard');
+    //         } elseif ($user->hasRole('Annonceur')) {
+    //             return redirect()->route('annonceur.dashboard');
+    //         }
+            
+    //         return redirect()->intended('/dashboard');
+    //     }
+
+    //     return back()->withErrors([
+    //         'email' => 'Les identifiants ne correspondent pas.',
+    //     ]);
+    // }
+
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -33,22 +66,19 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            
+
             $user = Auth::user();
-            
+
             // Redirection basée sur le rôle
-            if ($user->hasRole('SuperAdmin')) {
+            if ($user->hasRole('SuperAdmin') || $user->hasRole('Admin') || $user->hasRole('Proprietaire')) {
                 return redirect()->route('admin.dashboard');
-            } elseif ($user->hasRole('Admin')) {
-                return redirect()->route('admin.dashboard');
-            } elseif ($user->hasRole('Proprietaire')) {
-                return redirect()->route('proprietaire.dashboard');
             } elseif ($user->hasRole('Media')) {
                 return redirect()->route('media.dashboard');
             } elseif ($user->hasRole('Annonceur')) {
                 return redirect()->route('annonceur.dashboard');
             }
-            
+
+            // Cas par défaut si aucun rôle trouvé
             return redirect()->intended('/dashboard');
         }
 
@@ -56,6 +86,7 @@ class AuthController extends Controller
             'email' => 'Les identifiants ne correspondent pas.',
         ]);
     }
+
 
     public function register(Request $request)
     {
@@ -116,7 +147,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('admin.dashboard');
+        return redirect()->route('login');
     }
 
     public function logout(Request $request)

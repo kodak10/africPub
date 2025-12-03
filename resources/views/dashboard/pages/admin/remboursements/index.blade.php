@@ -312,9 +312,8 @@
                 <i class="material-icons text-muted" style="font-size: 64px;">receipt_long</i>
                 <h4 class="text-muted mt-3">Aucune demande de remboursement</h4>
                 <p class="text-muted">Aucune demande ne correspond à vos critères de recherche.</p>
-                <a href="{{ route('admin.paiements.remboursements.create') }}" class="btn btn-primary">
-                    <i class="material-icons me-1">add</i>
-                    Créer une demande
+                <a href="{{ route('admin.paiements.remboursements.index') }}" class="btn btn-primary mt-3">
+                    Réinitialiser les filtres 
                 </a>
             </div>
         @endif

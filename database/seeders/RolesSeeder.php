@@ -16,6 +16,6 @@ class RolesSeeder extends Seeder
 
         // Utilisateurs fonctionnels
         Role::firstOrCreate(['name' => 'Annonceur']);
-        Role::firstOrCreate(['name' => 'Media']); // si tu veux un rôle spécifique pour les gestionnaires de media
+        Role::firstOrCreate(['name' => 'Media']); 
     }
 }

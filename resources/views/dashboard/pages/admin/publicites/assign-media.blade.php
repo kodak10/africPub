@@ -146,28 +146,63 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 <script>
 $(document).ready(function() {
-    // Initialisation des Select2 hors modaux
-    $('.select2-init').select2({
-        placeholder: "Sélectionner...",
-        allowClear: true
+    console.log("DOM prêt, initialisation des Select2 hors modals.");
+
+    // Select2 global hors modals
+    $('.select2-init').each(function() {
+        console.log("Initialisation Select2 hors modal pour:", this);
+        $(this).select2({
+            placeholder: "Sélectionner...",
+            allowClear: true,
+            width: '100%'
+        });
     });
 
-    // Initialisation des Select2 dans les modaux
-    $('.modal').on('shown.bs.modal', function() {
-        var $select = $(this).find('.select2-modal');
-        if ($select.length && !$select.hasClass('select2-hidden-accessible')) {
-            $select.select2({
-                placeholder: "Sélectionner...",
-                allowClear: true,
-                dropdownParent: $(this)
-            });
-        }
+    // Select2 dans les modals existants
+    $('.modal').each(function() {
+        var $modal = $(this);
+        console.log("Initialisation Select2 dans modal:", $modal.attr('id'));
+
+        $modal.find('.select2-modal').each(function() {
+            console.log("  - Select2 modal trouvé:", this);
+            if (!$(this).hasClass('select2-hidden-accessible')) {
+                $(this).select2({
+                    placeholder: "Sélectionner...",
+                    allowClear: true,
+                    width: '100%',
+                    dropdownParent: $modal
+                });
+                console.log("    -> Select2 initialisé pour:", this);
+            } else {
+                console.log("    -> Select2 déjà initialisé pour:", this);
+            }
+        });
     });
 
-    // Nettoyage à la fermeture des modaux
-    $('.modal').on('hidden.bs.modal', function() {
-        $(this).find('.select2-modal').select2('destroy');
+    // Gestion à l'ouverture du modal (dynamic ou déjà existant)
+    $('.modal').on('shown.bs.modal', function () {
+        console.log("Modal ouvert:", $(this).attr('id'));
+        $(this).find('.select2-modal').each(function () {
+            console.log("  - Vérification Select2 pour:", this);
+            if (!$(this).hasClass('select2-hidden-accessible')) {
+                $(this).select2({
+                    placeholder: "Sélectionner...",
+                    allowClear: true,
+                    width: '100%',
+                    dropdownParent: $(this).closest('.modal')
+                });
+                console.log("    -> Select2 initialisé après ouverture du modal:", this);
+            } else {
+                console.log("    -> Select2 déjà initialisé après ouverture:", this);
+            }
+        });
+    });
+
+    // Debug à la fermeture du modal
+    $('.modal').on('hidden.bs.modal', function () {
+        console.log("Modal fermé:", $(this).attr('id'));
     });
 });
+
 </script>
 @endsection

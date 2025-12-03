@@ -1,10 +1,14 @@
 <?php
 
-use App\Http\Controllers\Admin\MediaController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\PubliciteController;
 use App\Http\Controllers\Admin\PaiementController;
 use App\Http\Controllers\Admin\AnnonceurController as AdminAnnonceurController;
+use App\Http\Controllers\Admin\MediaController as AdminMediaController;
 use App\Http\Controllers\Annonceur\AnnonceurController as UserAnnonceurController;
+use App\Http\Controllers\Media\MediaController  as UserMediaController;
+use App\Http\Controllers\Media\MediaPaiementController as UserMediaPaiementController;
+
 use App\Http\Controllers\Auth\AuthController;
 
 
@@ -22,17 +26,20 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('regi
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('/', function() {
+    return redirect()->route('login');
+});
 /*
 |--------------------------------------------------------------------------
 | Administrateurs
 |--------------------------------------------------------------------------
 */
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:Admin'])->group(function () {
 
     // Tableau de bord
-    Route::get('/dashboard', function () {
-        return 'Dashboard Administrateurs';
-    })->name('dashboard');
+    Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+    Route::get('/rapports', [AdminController::class, 'rapport'])->name('rapports');
+
 
     /**
      * -------------------------
@@ -51,9 +58,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
      * -------------------------
      */
     Route::prefix('medias')->name('medias.')->group(function () {
-        Route::get('/', [MediaController::class, 'index'])->name('index');
-        Route::get('/toggle-status/{id}/{action}', [MediaController::class, 'toggleStatus'])->name('toggle-status');
-        Route::get('/show/{id}', [MediaController::class, 'show'])->name('show');
+        Route::get('/', [AdminMediaController::class, 'index'])->name('index');
+        Route::get('/toggle-status/{id}/{action}', [AdminMediaController::class, 'toggleStatus'])->name('toggle-status');
+        Route::get('/show/{id}', [AdminMediaController::class, 'show'])->name('show');
     });
 
     /**
@@ -129,19 +136,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
 
-    /**
-     * -------------------------
-     *  MODERATION SITES
-     * -------------------------
-     */
-    Route::get('/sites/moderation', function () {
-        return 'Modération des sites';
-    })->name('sites');
-
-
-    Route::get('/rapport-financier', function () {
-        return 'Rapport financier';
-    })->name('rapport_financier');
+   
 });
 
 
@@ -151,7 +146,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 |--------------------------------------------------------------------------
 */
 // Routes pour l'espace annonceur
-Route::prefix('annonceur')->name('annonceur.')->group(function () {
+Route::prefix('annonceur')->name('annonceur.')->middleware(['auth', 'role:Annonceur'])->group(function () {
     // Dashboard
     Route::get('/dashboard', [UserAnnonceurController::class, 'dashboard'])->name('dashboard');
     
@@ -179,20 +174,20 @@ Route::prefix('annonceur')->name('annonceur.')->group(function () {
 |--------------------------------------------------------------------------
 */
 // Routes pour les médias
-Route::prefix('media')->name('media.')->group(function () {
+Route::prefix('media')->name('media.')->middleware(['auth', 'role:Media'])->group(function () {
     // Dashboard
-    Route::get('/dashboard', [MediaController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard', [UserMediaController::class, 'dashboard'])->name('dashboard');
     
     // Rapports et statistiques
-    Route::get('/rapports', [MediaController::class, 'rapports'])->name('rapports');
-    Route::get('/rapports/detail/{publicite}', [MediaController::class, 'rapportDetail'])->name('rapports.detail');
+    Route::get('/rapports', [UserMediaController::class, 'rapports'])->name('rapports');
+    Route::get('/rapports/detail/{publicite}', [UserMediaController::class, 'rapportDetail'])->name('rapports.detail');
     
     // Paiements
-    Route::get('/paiements/historique', [MediaPaiementController::class, 'historique'])->name('paiements.historique');
-    Route::get('/paiements/reclamation', [MediaPaiementController::class, 'reclamation'])->name('paiements.reclamation');
-    Route::post('/paiements/demander', [MediaPaiementController::class, 'demanderPaiement'])->name('paiements.demander');
-    Route::get('/paiements/detail/{paiement}', [MediaPaiementController::class, 'detailPaiement'])->name('paiements.detail');
+    Route::get('/paiements/historique', [UserMediaPaiementController::class, 'historique'])->name('paiements.historique');
+    Route::get('/paiements/reclamation', [UserMediaPaiementController::class, 'reclamation'])->name('paiements.reclamation');
+    Route::post('/paiements/demander', [UserMediaPaiementController::class, 'demanderPaiement'])->name('paiements.demander');
+    Route::get('/paiements/detail/{paiement}', [UserMediaPaiementController::class, 'detailPaiement'])->name('paiements.detail');
     
     // API pour graphiques
-    Route::get('/api/statistiques', [MediaController::class, 'apiStatistiques'])->name('api.statistiques');
+    Route::get('/api/statistiques', [UserMediaController::class, 'apiStatistiques'])->name('api.statistiques');
 });

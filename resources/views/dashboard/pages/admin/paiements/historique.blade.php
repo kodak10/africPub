@@ -17,12 +17,7 @@
                 </ol>
             </nav>
         </div>
-        <div class="subheader-toolbar">
-            <a href="{{ route('admin.paiements.index') }}" class="btn btn-primary">
-                <i class="material-icons me-1">arrow_back</i>
-                Retour aux demandes
-            </a>
-        </div>
+        
     </div>
 </div>
 
