@@ -16,9 +16,7 @@ class MediaController extends Controller
 {
     public function dashboard()
     {
-        $user = auth()->user;
-        $media = Media::where('user_id', $user->id)->first();
-        
+        $media = auth()->user()->media;        
         
         // Statistiques du mois en cours
         $debutMois = now()->startOfMonth();
@@ -50,7 +48,7 @@ class MediaController extends Controller
         // Performances des 7 derniers jours
         $performances7Jours = $this->getPerformancesParPeriode($media, now()->subDays(7), now());
 
-        return view('dashboard.pages.media.dashboard', compact(
+        return view('dashboard.pages.media.home', compact(
             'media',
             'statsMois',
             'publicitesActives',
@@ -61,8 +59,7 @@ class MediaController extends Controller
 
     public function rapports(Request $request)
     {
-        $user = auth()->user();
-        $media = Media::where('user_id', $user->id)->first();
+        $media = auth()->user()->media;
 
         // if (!$media) {
         //     return back()->with('error', 'Aucun média trouvé.');
@@ -113,8 +110,7 @@ class MediaController extends Controller
 
     public function rapportDetail(Publicite $publicite)
     {
-        $user = auth()->user();
-        $media = Media::where('user_id', $user->id)->first();
+        $media = auth()->user()->media;
 
         // Vérifier que la publicité appartient bien au média
         if (!$media->publicites()->where('publicite_id', $publicite->id)->exists()) {
@@ -161,8 +157,7 @@ class MediaController extends Controller
 
     public function apiStatistiques(Request $request)
     {
-        $user = auth()->user();
-        $media = Media::where('user_id', $user->id)->first();
+       $media = auth()->user()->media;
 
         $periode = $request->get('periode', '7jours'); // 7jours, 30jours, 3mois
 

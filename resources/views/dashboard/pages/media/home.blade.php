@@ -2,7 +2,7 @@
 
 @section('content')
 <!-- SUBHEADER -->
-<div class="subheader px-lg">
+{{-- <div class="subheader px-lg">
     <div class="subheader-container">
         <div class="subheader-main">
             <h3 class="subheader-title">Tableau de Bord Média</h3>
@@ -235,5 +235,5 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 @endsection

@@ -17,12 +17,7 @@
                 </ol>
             </nav>
         </div>
-        <div class="subheader-toolbar">
-            <a href="{{ route('media.paiements.reclamation') }}" class="btn btn-primary">
-                <i class="material-icons me-1">request_quote</i>
-                Demander un Paiement
-            </a>
-        </div>
+       
     </div>
 </div>
 

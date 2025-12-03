@@ -58,7 +58,7 @@
 
     <!-- STATISTIQUES GLOBALES -->
     <div class="row mb-4">
-        <div class="col-xl-3 col-md-6 mb-4">
+        <div class="col-xl-4 col-md-6 mb-4">
             <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -81,7 +81,7 @@
             </div>
         </div>
 
-        <div class="col-xl-3 col-md-6 mb-4">
+        <div class="col-xl-4 col-md-6 mb-4">
             <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -104,30 +104,9 @@
             </div>
         </div>
 
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Taux de Conversion
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                {{ $statsPeriode['taux_conversion'] }}%
-                            </div>
-                            <div class="text-xs text-muted mt-1">
-                                Performance globale
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="material-icons text-gray-300" style="font-size: 2rem;">trending_up</i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
 
-        <div class="col-xl-3 col-md-6 mb-4">
+        <div class="col-xl-4 col-md-6 mb-4">
             <div class="card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -195,7 +174,6 @@
                                 <th>Forfait</th>
                                 <th>Vues</th>
                                 <th>Clics</th>
-                                <th>Taux Conversion</th>
                                 <th>Revenu Estimé</th>
                                 <th>Actions</th>
                             </tr>
@@ -229,11 +207,6 @@
                                 </td>
                                 <td>
                                     <strong class="text-success">{{ number_format($publicite->clics_periode, 0, ',', ' ') }}</strong>
-                                </td>
-                                <td>
-                                    <span class="badge bg-{{ $publicite->taux_conversion >= 2 ? 'success' : ($publicite->taux_conversion >= 1 ? 'warning' : 'danger') }}">
-                                        {{ $publicite->taux_conversion }}%
-                                    </span>
                                 </td>
                                 <td>
                                     <strong class="text-warning">{{ number_format($publicite->revenu_estime, 0, ',', ' ') }} FCFA</strong>

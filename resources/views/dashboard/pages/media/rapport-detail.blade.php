@@ -76,7 +76,7 @@
 
     <!-- STATISTIQUES DÉTAILLÉES -->
     <div class="row mb-4">
-        <div class="col-xl-3 col-md-6 mb-4">
+        <div class="col-xl-4 col-md-6 mb-4">
             <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -96,7 +96,7 @@
             </div>
         </div>
 
-        <div class="col-xl-3 col-md-6 mb-4">
+        <div class="col-xl-4 col-md-6 mb-4">
             <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -116,27 +116,9 @@
             </div>
         </div>
 
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Taux de Conversion
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                {{ $statsPublicite['taux_conversion'] }}%
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="material-icons text-gray-300">trending_up</i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+       
 
-        <div class="col-xl-3 col-md-6 mb-4">
+        <div class="col-xl-4 col-md-6 mb-4">
             <div class="card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -261,12 +243,7 @@
                 <div class="col-md-6">
                     <h6>Recommandations</h6>
                     <ul class="list-unstyled">
-                        @if($statsPublicite['taux_conversion'] < 1)
-                        <li class="mb-2">
-                            <i class="material-icons text-warning me-2">info</i>
-                            <strong>Améliorer l'engagement:</strong> Taux de conversion faible ({{ $statsPublicite['taux_conversion'] }}%)
-                        </li>
-                        @endif
+                        
                         @if($statsPublicite['vues_total'] < 100)
                         <li class="mb-2">
                             <i class="material-icons text-warning me-2">info</i>

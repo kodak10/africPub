@@ -27,7 +27,8 @@
     </div>
 </div>
 
-<div class="row">
+<div class="container mt-3">
+    <div class="row">
     <div class="col-lg-8">
         <!-- CARTE PRINCIPALE -->
         <div class="card">
@@ -84,24 +85,19 @@
                         <div class="info-item mb-4">
                             <label class="form-label fw-bold text-muted">Statistiques de performance</label>
                             <div class="row text-center">
-                                <div class="col-4">
+                                <div class="col-6">
                                     <div class="border rounded p-2">
                                         <div class="h3 text-info mb-0">{{ number_format($stats['vues_total']) }}</div>
                                         <small class="text-muted">Vues totales</small>
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-6">
                                     <div class="border rounded p-2">
                                         <div class="h3 text-success mb-0">{{ number_format($stats['clics_total']) }}</div>
                                         <small class="text-muted">Clics totaux</small>
                                     </div>
                                 </div>
-                                <div class="col-4">
-                                    <div class="border rounded p-2">
-                                        <div class="h3 text-warning mb-0">{{ number_format($stats['taux_conversion'], 1) }}%</div>
-                                        <small class="text-muted">Taux conversion</small>
-                                    </div>
-                                </div>
+                                
                             </div>
                         </div>
 
@@ -273,52 +269,9 @@
             </div>
         </div>
 
-        <!-- CARTE PERFORMANCES -->
-        <div class="card">
-            <div class="card-header bg-info text-white">
-                <h5 class="card-title mb-0">
-                    <i class="material-icons me-2">trending_up</i>
-                    Analyse des Performances
-                </h5>
-            </div>
-            <div class="card-body">
-                <div class="performance-item mb-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span>Taux de conversion:</span>
-                        <strong class="{{ $stats['taux_conversion'] > 2 ? 'text-success' : 'text-warning' }}">
-                            {{ number_format($stats['taux_conversion'], 2) }}%
-                        </strong>
-                    </div>
-                    <div class="progress mt-1" style="height: 6px;">
-                        <div class="progress-bar bg-{{ $stats['taux_conversion'] > 2 ? 'success' : 'warning' }}" 
-                             style="width: {{ min($stats['taux_conversion'], 10) * 10 }}%"></div>
-                    </div>
-                </div>
-
-                <div class="performance-item mb-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span>Engagement 30 jours:</span>
-                        <strong class="{{ $stats['vues_30j'] > 1000 ? 'text-success' : 'text-info' }}">
-                            {{ number_format($stats['vues_30j']) }} vues
-                        </strong>
-                    </div>
-                </div>
-
-                <div class="performance-item">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span>Performance globale:</span>
-                        @if($stats['taux_conversion'] > 3 && $stats['vues_total'] > 5000)
-                        <span class="badge bg-success">Excellente</span>
-                        @elseif($stats['taux_conversion'] > 1 && $stats['vues_total'] > 1000)
-                        <span class="badge bg-info">Bonne</span>
-                        @else
-                        <span class="badge bg-warning">À améliorer</span>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
+       
     </div>
+</div>
 </div>
 
 <!-- STYLE POUR L'IMPRESSION -->

@@ -66,61 +66,44 @@ class MediaPaiementController extends Controller
 
 public function reclamation()
 {
-    $media = Media::first();
-    
+    $media = auth()->user()->media;
 
     if (!$media) {
         return back()->with('error', 'Aucun média trouvé.');
     }
 
-
-    // Récupérer le paiement lié — ici je prends le dernier paiement du média
-    // Adapte si tu as une relation différente (ex: $media->paiements())
-    $paiement = $media->paiementsMedia()->orderBy('created_at', 'desc')->first();
-
-    // Si pas de paiement trouvé, on crée un objet null-safe pour la vue
-    if (!$paiement) {
-        $paiement = null;
-    }
+    // Récupérer le dernier paiement du média (peut être null)
+    $paiement = $media->paiementsMedia()->orderByDesc('created_at')->first();
 
     // Vérifier l'éligibilité au paiement
     $eligibilite = $media->estEligiblePaiement();
 
-    // Dernières demandes de paiement (pivot/table demandes)
+    // Vérifier s'il existe une demande en cours
+    $demandeEnCours = $media->paiement_demande ?? null;
+
+    // Dernières demandes de paiement
     $demandesRecent = $media->demandesPaiement()
-        ->orderBy('created_at', 'desc')
+        ->orderByDesc('created_at')
         ->take(5)
         ->get();
 
-    // Construire les statistiques attendues par la vue
-    // Remplace les calculs par ceux qui correspondent à ton modèle/BDD si nécessaire
-    $vuesCouvertes = 0;
-    $clicsCouverts = 0;
-    $periodeCouverte = 'Personnalisée';
+    // Statistiques pour la vue
+    $vues = $paiement->vues_couvertes ?? $media->total_vues ?? 0;
+    $clics = $paiement->clics_couverts ?? $media->total_clics ?? 0;
 
+    $periode = 'Personnalisée';
     if ($paiement) {
-        // Exemple d'obtention des stats : adapte selon tes colonnes/relations
-        // Supposons que le paiement contient des métadonnées ou que tu peux calculer par rapport aux publicites liées
-        // Exemple simple : chercher dans la table pivot publicite_media les enregistrements liés au paiement (si tu as)
-        // Ici on fait un calcul basique depuis le média ou depuis le paiement (à adapter)
-
-        // Si tu as des champs spécifiques sur paiement, utilise-les. Sinon on calcule depuis le média :
-        $vuesCouvertes = $paiement->vues_couvertes ?? $media->total_vues ?? 0;
-        $clicsCouverts = $paiement->clics_couverts ?? $media->total_clics ?? 0;
-
-        // Exemple de période : si paiement possède date_debut/date_fin
         if (!empty($paiement->date_debut) && !empty($paiement->date_fin)) {
-            $periodeCouverte = $paiement->date_debut->format('d/m/Y') . ' - ' . $paiement->date_fin->format('d/m/Y');
-        } else {
-            // fallback : utiliser created_at
-            $periodeCouverte = $paiement->created_at ? $paiement->created_at->format('d/m/Y') : 'Personnalisée';
+            $periode = $paiement->date_debut->format('d/m/Y') . ' - ' . $paiement->date_fin->format('d/m/Y');
+        } elseif (!empty($paiement->created_at)) {
+            $periode = $paiement->created_at->format('d/m/Y');
         }
     }
 
     $statistiquesPaiement = [
-        'vues_couvertes'  => (int) $vuesCouvertes,
-        'clics_couverts'  => (int) $clicsCouverts,
-        'periode_couverte' => $periodeCouverte,
+        'vues_couvertes'  => (int) $vues,
+        'clics_couverts'  => (int) $clics,
+        'periode_couverte' => $periode,
     ];
 
     return view('dashboard.pages.media.paiements.reclamation', compact(
@@ -128,24 +111,16 @@ public function reclamation()
         'eligibilite',
         'demandesRecent',
         'paiement',
+        'demandeEnCours',
         'statistiquesPaiement'
     ));
 }
 
 
+
 public function demanderPaiement(Request $request)
 {
-    $user = auth()->user();
-    
-    if (!$user) {
-        return redirect()->route('login')->with('error', 'Veuillez vous connecter.');
-    }
-
-    $media = Media::where('user_id', $user->id)->first();
-
-    if (!$media) {
-        return back()->with('error', 'Aucun média trouvé.');
-    }
+    $media = auth()->user()->media; 
 
     // Vérifier l'éligibilité
     $eligibilite = $media->estEligiblePaiement();
@@ -179,7 +154,7 @@ public function demanderPaiement(Request $request)
 
         DB::commit();
 
-        return redirect()->route('media.paiements.detail', $paiement->id)
+        return redirect()->route('media.paiements.reclamation', $paiement->id)
             ->with('success', 'Demande de paiement envoyée avec succès!');
 
     } catch (\Exception $e) {
