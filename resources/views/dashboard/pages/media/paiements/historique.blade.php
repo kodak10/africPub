@@ -197,10 +197,10 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <small>
+                                    {{-- <small> Kodak
                                         {{ $paiement->date_demande->format('d/m/Y') }}<br>
                                         <span class="text-muted">{{ $paiement->date_demande->format('H:i') }}</span>
-                                    </small>
+                                    </small> --}}
                                 </td>
                                 <td>
                                     @if($paiement->date_paiement)

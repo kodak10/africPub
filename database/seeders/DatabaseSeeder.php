@@ -21,12 +21,12 @@ class DatabaseSeeder extends Seeder
             ForfaitsSeeder::class,
             PublicitesSeeder::class,
             PaiementAnnonceursSeeder::class,
-            // PubliciteMediaSeeder::class,
-            // VuesPublicitesSeeder::class,
-            // ClicsPublicitesSeeder::class,
-            // DemandesPaiementSeeder::class,
-            // PaiementMediaSeeder::class,
-            // DemandesRemboursementSeeder::class,
+            PubliciteMediaSeeder::class,
+            VuesPublicitesSeeder::class,
+            ClicsPublicitesSeeder::class,
+            DemandesPaiementSeeder::class,
+            PaiementMediaSeeder::class,
+            DemandesRemboursementSeeder::class,
             
         ]);
     }
