@@ -10,12 +10,12 @@
               <div class="main-menu">
                 <ul>
                     <li><a href="/">Accueil</a></li>                  
-                    <li><a href="#about">Qui Sommes-Nous ?</a></li>
-                    <li><a href="#howTo">Comment ça marche ?</a></li>
+                    <li><a href="/#about">Qui Sommes-Nous ?</a></li>
+                    <li><a href="/#howTo">Comment ça marche ?</a></li>
                 </ul>
               </div>
               <div class="btn-area">
-                <a href="#signUp" class="header-btn18">S'Inscrire <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="/#signUp" class="header-btn18">S'Inscrire <i class="fa-solid fa-arrow-right"></i></a>
               </div>
             </div>
           </div>

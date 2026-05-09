@@ -25,8 +25,8 @@
   <div class="mobile-nav mobile-nav1">
     <ul class="mobile-nav-list nav-list1">
       <li><a href="/">Accueil</a></li>
-      <li><a href="#about">Qui Sommes-Nous ?</a></li>
-      <li><a href="#howTo">Comment ça marche ?</a></li>
+      <li><a href="/#about">Qui Sommes-Nous ?</a></li>
+      <li><a href="/#howTo">Comment ça marche ?</a></li>
     </ul>
 
     <div class="allmobilesection">

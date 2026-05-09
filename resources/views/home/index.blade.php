@@ -256,7 +256,7 @@
               </div>
               <div class="content">
                 <h4>Email</h4>
-                <a href="mailto:contact@africpub.com">contact@africpub.com</a>
+                <a href="mailto:contact@africpub.net">contact@africpub.net</a>
               </div>
             </div>
           </div>

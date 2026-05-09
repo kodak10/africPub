@@ -31,7 +31,7 @@
           <div class="footer-logo-area2">
             <h3>Nous contacter</h3>
             <ul>
-              <li><a href="mailto:contact@africpub.com"><img src="{{asset('home/assets/img/icons/email.svg')}}" alt="Email"><span>contact@africpub.com</span></a></li>
+              <li><a href="mailto:contact@africpub.net"><img src="{{asset('home/assets/img/icons/email.svg')}}" alt="Email"><span>contact@africpub.net</span></a></li>
               <li><a href="#"><img src="{{asset('home/assets/img/icons/location.svg')}}" alt="Adresse"><span>Lorem ipsum dolor sit amet consectetur adipisicing e, <br class="d-lg-block d-none">Abidan, Côte D'Ivoire</span></a></li>
               <li><a href="tel:+225123456789"><img src="{{asset('home/assets/img/icons/phone.svg')}}" alt="Téléphone"><span>+225 1 23 45 67 89</span></a></li>
             </ul>
