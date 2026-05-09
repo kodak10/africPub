@@ -16,8 +16,9 @@ use App\Http\Controllers\Admin\RemboursementAnnonceurController;
 
 use Illuminate\Support\Facades\Route;
 
-
-
+Route::get('/', function () {
+    return view('home.index');
+});
 
 // Authentication Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -26,9 +27,12 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('regi
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/', function() {
-    return redirect()->route('login');
-});
+// Route::get('/', function() {
+//     return redirect()->route('login');
+// });
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Administrateurs

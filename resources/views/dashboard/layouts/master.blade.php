@@ -109,7 +109,82 @@
     <script src="{{ asset('assets/js/pages/dashboard/jobManagement.min.js') }}"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="https:////cdn.datatables.net/plug-ins/2.3.5/i18n/fr-FR.json"></script>
+    {{-- <script src="https://cdn.datatables.net/plug-ins/2.3.5/i18n/fr-FR.json"></script> --}}
+
+    <script>
+    // Définition de la traduction française pour DataTable
+    const frenchTranslation = {
+        "sProcessing": "Traitement en cours...",
+        "sSearch": "Rechercher :",
+        "sLengthMenu": "Afficher _MENU_ éléments",
+        "sInfo": "Affichage de _START_ à _END_ sur _TOTAL_ éléments",
+        "sInfoEmpty": "Affichage de 0 à 0 sur 0 éléments",
+        "sInfoFiltered": "(filtré de _MAX_ éléments au total)",
+        "sInfoPostFix": "",
+        "sLoadingRecords": "Chargement en cours...",
+        "sZeroRecords": "Aucun élément à afficher",
+        "sEmptyTable": "Aucune donnée disponible dans le tableau",
+        "oPaginate": {
+            "sFirst": "Premier",
+            "sPrevious": "Précédent",
+            "sNext": "Suivant",
+            "sLast": "Dernier"
+        },
+        "oAria": {
+            "sSortAscending": ": activer pour trier la colonne par ordre croissant",
+            "sSortDescending": ": activer pour trier la colonne par ordre décroissant"
+        },
+        "sDecimal": ",",
+        "sThousands": " "
+    };
+
+    $(document).ready(function() {
+        // Vérification de la présence de messages de session
+        @if (session('success'))
+            toastr.success("{{ session('success') }}");
+        @elseif (session('error'))
+            toastr.error("{{ session('error') }}");
+        @endif
+
+        // Configuration de Toastr
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "timeOut": "5000"
+        };
+
+        // Vérification et destruction de l'instance DataTable existante
+        if ($.fn.dataTable.isDataTable('#datatableScrollXY')) {
+            $('#datatableScrollXY').DataTable().destroy();
+        }
+
+        // Initialisation de DataTable avec la traduction française intégrée
+        var table = $('#datatableScrollXY').DataTable({
+            scrollY: "400px",
+            scrollX: true,
+            scrollCollapse: true,
+            paging: true,
+            searching: true,
+            ordering: true,
+            responsive: false,
+            autoWidth: false,
+            language: frenchTranslation, // Utilisation de la traduction intégrée
+            dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
+                 '<"row"<"col-sm-12"tr>>' +
+                 '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>'
+        });
+        
+        // Forcer les styles CSS pour le conteneur du tableau
+        $('#datatableScrollXY').css('width', '100%');
+        setTimeout(function() {
+            $('.dataTables_scrollBody').css({
+                'overflow-x': 'auto',
+                'overflow-y': 'auto'
+            });
+        }, 100);
+    });
+</script>
 
     <script>
         $(document).ready(function() {

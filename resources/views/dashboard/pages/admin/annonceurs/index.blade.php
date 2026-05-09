@@ -300,7 +300,12 @@
 
 <script>
 $(document).ready(function () {
-    // Datatable en français
+    // Détruire l'instance existante si elle existe
+    if ($.fn.DataTable.isDataTable('#datatableScrollXY')) {
+        $('#datatableScrollXY').DataTable().destroy();
+    }
+    
+    // Initialisation correcte de DataTable avec scroll
     $('#datatableScrollXY').DataTable({
         scrollY: "400px",
         scrollX: true,
@@ -309,127 +314,33 @@ $(document).ready(function () {
         searching: true,
         ordering: true,
         responsive: false,
+        autoWidth: false,  // Important pour le scrollX
         language: {
             url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json"
         },
         dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
              '<"row"<"col-sm-12"tr>>' +
-             '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>'
-    });
-
-    // Configuration de Toastr
-    toastr.options = {
-        "closeButton": true,
-        "progressBar": true,
-        "positionClass": "toast-top-right",
-        "timeOut": "5000"
-    };
-
-    // Fonction pour valider un annonceur
-    $('.validate-btn').click(function(e) {
-        e.preventDefault();
-        var id = $(this).data('id');
-        var name = $(this).closest('tr').find('td:nth-child(2)').text();
-        
-        Swal.fire({
-            title: 'Valider cet annonceur ?',
-            html: `Vous êtes sur le point de valider le compte de <strong>${name}</strong>.`,
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Oui, valider !',
-            cancelButtonText: 'Annuler'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: '/admin/annonceurs/toggle-status/' + id,
-                    type: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        action: 'validate'
-                    },
-                    success: function(response) {
-                        toastr.success(response.message, 'Succès');
-                        setTimeout(() => location.reload(), 1500);
-                    },
-                    error: function(xhr) {
-                        toastr.error('Une erreur est survenue lors de la validation', 'Erreur');
+             '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+        // Configuration supplémentaire pour le scroll horizontal
+        columnDefs: [
+            {
+                targets: '_all',
+                render: function(data, type, row) {
+                    // Permet aux cellules longues de scroller
+                    if (type === 'display' && data && data.length > 50) {
+                        return '<span style="white-space: nowrap;">' + data + '</span>';
                     }
-                });
+                    return data;
+                }
             }
-        });
+        ]
     });
-
-    // Fonction pour suspendre un annonceur
-    $('.suspend-btn').click(function(e) {
-        e.preventDefault();
-        var id = $(this).data('id');
-        var name = $(this).closest('tr').find('td:nth-child(2)').text();
-        
-        Swal.fire({
-            title: 'Suspendre cet annonceur ?',
-            html: `Vous êtes sur le point de suspendre le compte de <strong>${name}</strong>.`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#f39c12',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Oui, suspendre !',
-            cancelButtonText: 'Annuler'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: '/admin/annonceurs/toggle-status/' + id,
-                    type: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        action: 'remove'
-                    },
-                    success: function(response) {
-                        toastr.warning(response.message, 'Suspension');
-                        setTimeout(() => location.reload(), 1500);
-                    },
-                    error: function(xhr) {
-                        toastr.error('Une erreur est survenue lors de la suspension', 'Erreur');
-                    }
-                });
-            }
-        });
-    });
-
-    // Fonction pour supprimer un annonceur
-    $('.delete-btn').click(function(e) {
-        e.preventDefault();
-        var id = $(this).data('id');
-        var name = $(this).data('name') || $(this).closest('tr').find('td:nth-child(2)').text();
-        
-        Swal.fire({
-            title: 'Supprimer cet annonceur ?',
-            html: `Êtes-vous sûr de vouloir supprimer définitivement <strong>${name}</strong> ?<br><span class="text-danger">Cette action est irréversible !</span>`,
-            icon: 'error',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Oui, supprimer !',
-            cancelButtonText: 'Annuler'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: '/admin/annonceurs/' + id,
-                    type: 'DELETE',
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        toastr.success(response.message, 'Supprimé');
-                        setTimeout(() => location.reload(), 1500);
-                    },
-                    error: function(xhr) {
-                        toastr.error('Une erreur est survenue lors de la suppression', 'Erreur');
-                    }
-                });
-            }
-        });
+    
+    // Forcer les styles CSS pour le conteneur du tableau
+    $('#datatableScrollXY').css('width', '100%');
+    $('.dataTables_scrollBody').css({
+        'overflow-x': 'auto',
+        'overflow-y': 'auto'
     });
 });
 </script>

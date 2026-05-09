@@ -143,7 +143,7 @@
                     </tr>
 
                     <!-- Modal preview -->
-                    <div class="modal fade" id="modalPub{{ $pub->id }}" tabindex="-1">
+                    {{-- <div class="modal fade" id="modalPub{{ $pub->id }}" tabindex="-1">
                         <div class="modal-dialog modal-lg modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -164,7 +164,40 @@
                                 </div>
                             </div>
                         </div>
+                    </div> --}}
+                    <!-- Modal preview - Version avec dossier publicites -->
+<div class="modal fade" id="modalPub{{ $pub->id }}" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ $pub->titre }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center">
+                @if($pub->type_media == 'image')
+                    <img src="{{ asset('storage/' . $pub->media_path) }}" class="img-fluid rounded mb-2" alt="{{ $pub->titre }}">
+                @elseif($pub->type_media == 'video')
+                    @php
+                        // Si le chemin commence par 'publicites/', on le garde, sinon on l'ajoute
+                        $videoPath = Str::startsWith($pub->media_path, 'publicites/') 
+                            ? $pub->media_path 
+                            : 'publicites/' . $pub->media_path;
+                    @endphp
+                    <video controls class="img-fluid rounded mb-2" style="max-width: 100%; max-height: 500px;">
+                        <source src="{{ asset('storage/' . $videoPath) }}" type="video/mp4">
+                        Votre navigateur ne supporte pas la lecture de vidéos.
+                    </video>
+                    <div class="mt-2">
+                        <small class="text-muted">Chemin: {{ $videoPath }}</small>
                     </div>
+                @endif
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
 
                 @endforeach
             </tbody>
