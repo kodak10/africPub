@@ -72,7 +72,7 @@
 
             {{-- Détail du paiement existant --}}
             @if($paiement)
-                @include('dashboard.pages.media.paiements._detail', [
+                @include('dashboard.pages.admin.paiements.details-paiement', [
                     'paiement' => $paiement,
                     'statistiquesPaiement' => $statistiquesPaiement
                 ])

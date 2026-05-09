@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Afric-Pub</title>
+     <title>AFRICPUB - Votre Plateforme de Publication Africaine</title>
     <link href="{{ asset('assets/css/css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/css2') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/css/all.css') }}">
@@ -104,9 +104,7 @@
     <script src="{{ asset('assets/js/pages/datatables/scrollDatatable.min.js') }}"></script>
 
     <script src="{{ asset('assets/vendors/echarts/dist/echarts.min.js') }}"></script>
-    <script src="{{ asset('assets/vendors/apexcharts/dist/apexcharts.min.js') }}"></script>
     <script src="{{ asset('assets/js/data/series.min.js') }}"></script>
-    <script src="{{ asset('assets/js/pages/dashboard/jobManagement.min.js') }}"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     {{-- <script src="https://cdn.datatables.net/plug-ins/2.3.5/i18n/fr-FR.json"></script> --}}

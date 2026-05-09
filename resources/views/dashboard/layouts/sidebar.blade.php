@@ -9,38 +9,8 @@
 
     <div class="scroll-nav" data-perfect-scrollbar data-suppress-scroll-x="true">
 
-        <!-- User section -->
-        <div class="app-user text-center">
-            <div class="app-user-photo">
-                <img src="{{ Auth::user()->profile_photo_url ?? asset('assets/images/faces/default.jpg') }}" alt="{{ Auth::user()->name }}">
-            </div>
-            <div class="app-user-info">
-                <span class="app-user-name">{{ Auth::user()->name }}</span>
-
-                <div class="app-user-control d-flex justify-content-between w-100">
-                    {{-- Paramètres --}}
-                    <a class="control-item" href="">
-                        <i class="material-icons">settings</i>
-                    </a>
-
-                    {{-- Déconnexion --}}
-                    <a class="control-item" href="{{ route('logout') }}"
-                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <i class="material-icons">logout</i>
-                    </a>
-
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                        @csrf
-                    </form>
-                </div>
-            </div>
-        </div>
-
-
-       
-
         <!-- Sidebar Navigation -->
-        <div class="side-nav">
+        <div class="side-nav mt-5">
             <div class="main-menu">
                 <nav class="sidebar-nav">
                     <ul class="metismenu show-on-load" id="ul-menu">
@@ -208,6 +178,18 @@
                             </ul>
                         </li>
                         @endrole
+
+                        <li class="d-block d-md-none">
+                            <a href="{{ route('logout') }}"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="material-icons me-2">logout</i>
+                                Se déconnecter
+                            </a>
+                        </li>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
 
                     </ul>
                 </nav>

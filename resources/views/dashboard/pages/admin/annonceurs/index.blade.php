@@ -20,65 +20,69 @@
     </div>
 </div>
 
-<div class="container mt-3">
-    <div class="col-lg-12">
-    <div class="card">
-        <div class="card-header">
-            <h2 class="p-1 m-0 text-16 font-weight-semi">Liste des annonceurs</h2>
-        </div>
-        <div class="card-body">
-            <table class="table nowrap" id="datatableScrollXY" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>Membre depuis</th>
-                        <th>Nom</th>
-                        <th>Email</th>
-                        <th>Téléphone</th>
-                        <th>Adresse</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($annonceurs as $annonceur)
-                    <tr>
-                        <td>{{ \Carbon\Carbon::parse($annonceur->created_at)->locale('fr')->isoFormat('DD/MM/YYYY') }}</td>
-                        <td>{{ $annonceur->nom }}</td>
-                        <td>{{ $annonceur->email }}</td>
-                        <td>{{ $annonceur->telephone ?? '-' }}</td>
-                        <td>{{ $annonceur->adresse ?? '-' }}</td>
-                        <td>
-                            <span class="badge 
-                                @if($annonceur->statut == 'validé') bg-success 
-                                @elseif($annonceur->statut == 'suspendu') bg-danger 
-                                @else bg-warning @endif">
-                                {{ ucfirst($annonceur->statut) }}
-                            </span>
-                        </td>
-                        <td>
-                            <!-- Voir Modal -->
-                            <a href="#" class="text-info me-2" data-bs-toggle="modal" data-bs-target="#modalAnnonceur{{ $annonceur->id }}" title="Voir détails">
-                                <i class="material-icons">visibility</i>
-                            </a>
-                            <!-- Actions rapides -->
-                            @if($annonceur->statut !== 'validé')
-                            <a href="{{ route('admin.annonceurs.toggle-status', [$annonceur->id, 'validate']) }}" class="text-success me-2 validate-btn" data-id="{{ $annonceur->id }}" title="Valider">
-                                <i class="material-icons">check_circle</i>
-                            </a>
-                            @else
-                            <a href="{{ route('admin.annonceurs.toggle-status', [$annonceur->id, 'suspend']) }}" class="text-warning me-2 suspend-btn" data-id="{{ $annonceur->id }}" title="Suspendre">
-                                <i class="material-icons">pause_circle</i>
-                            </a>
-                            @endif
-                            
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="p-1 m-0 text-16 font-weight-semi">Liste des annonceurs</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped w-100" id="datatableAnnonceurs">
+                            <thead>
+                                <tr>
+                                    <th>Membre depuis</th>
+                                    <th>Nom</th>
+                                    <th>Email</th>
+                                    <th>Téléphone</th>
+                                    <th>Adresse</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($annonceurs as $annonceur)
+                                <tr>
+                                    <td>{{ \Carbon\Carbon::parse($annonceur->created_at)->locale('fr')->isoFormat('DD/MM/YYYY') }}</td>
+                                    <td>{{ $annonceur->nom }}</td>
+                                    <td>{{ $annonceur->email }}</td>
+                                    <td>{{ $annonceur->telephone ?? '-' }}</td>
+                                    <td>{{ $annonceur->adresse ?? '-' }}</td>
+                                    <td>
+                                        <span class="badge 
+                                            @if($annonceur->statut == 'validé') bg-success 
+                                            @elseif($annonceur->statut == 'suspendu') bg-danger 
+                                            @else bg-warning @endif">
+                                            {{ ucfirst($annonceur->statut) }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <a href="#" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalAnnonceur{{ $annonceur->id }}" title="Voir détails">
+                                                <i class="material-icons">visibility</i>
+                                            </a>
+                                            
+                                            @if($annonceur->statut !== 'validé')
+                                            <a href="{{ route('admin.annonceurs.toggle-status', [$annonceur->id, 'validate']) }}" class="btn btn-success validate-btn" data-id="{{ $annonceur->id }}" title="Valider">
+                                                <i class="material-icons">check_circle</i>
+                                            </a>
+                                            @else
+                                            <a href="{{ route('admin.annonceurs.toggle-status', [$annonceur->id, 'suspend']) }}" class="btn btn-warning suspend-btn" data-id="{{ $annonceur->id }}" title="Suspendre">
+                                                <i class="material-icons">pause_circle</i>
+                                            </a>
+                                            @endif
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 </div>
 
 <!-- MODALS (hors tableau) -->
@@ -86,7 +90,6 @@
 <div class="modal fade" id="modalAnnonceur{{ $annonceur->id }}" tabindex="-1" aria-labelledby="modalLabel{{ $annonceur->id }}" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-            
             <div class="modal-body">
                 <!-- En-tête du profil -->
                 <div class="row mb-4">
@@ -122,7 +125,6 @@
                             {{ $badgeText }}
                         </span>
                     </div>
-
                 </div>
 
                 <!-- Nav pills -->
@@ -187,7 +189,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                         
                         <!-- Publicités Tab -->
@@ -223,13 +224,12 @@
                                                     @if($pub->forfait)
                                                         <br><small class="text-muted">{{ $pub->forfait->montant ?? '0' }} FCFA</small>
                                                     @endif
-                                                </td>
+                                                 </td>
                                             </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
                                 </div>
-                                
                             @else
                                 <div class="text-center py-5">
                                     <i class="material-icons text-muted" style="font-size: 48px;">campaign</i>
@@ -241,10 +241,10 @@
                         
                         <!-- Statistiques Tab -->
                         <div class="tab-pane fade" id="pills-stats-{{ $annonceur->id }}" role="tabpanel" aria-labelledby="pills-stats-tab-{{ $annonceur->id }}">
-                            <div class="row text-center">
+                            <div class="row">
                                 <div class="col-md-4 mb-3">
                                     <div class="card bg-primary text-white">
-                                        <div class="card-body">
+                                        <div class="card-body text-center">
                                             <i class="material-icons mb-2">campaign</i>
                                             <h3>{{ $annonceur->publicites->count() }}</h3>
                                             <p class="mb-0">Publicités totales</p>
@@ -253,25 +253,23 @@
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <div class="card bg-success text-white">
-                                        <div class="card-body">
+                                        <div class="card-body text-center">
                                             <i class="material-icons mb-2">check_circle</i>
-                                            <h3>{{ $annonceur->publicites->where('statut', 'validé')->count() }}</h3>
+                                            <h3>{{ $annonceur->publicites->where('statut', 'actif')->count() }}</h3>
                                             <p class="mb-0">Publicités actives</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <div class="card bg-info text-white">
-                                        <div class="card-body">
-                                            <i class="material-icons mb-2">calendar_today</i>
+                                        <div class="card-body text-center">
+                                            <i class="material-icons mb-2">visibility</i>
                                             <h3>{{ $annonceur->publicites->sum(fn($p) => $p->vues->count()) }}</h3>
                                             <p class="mb-0">Total de vues</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
-                            
                         </div>
                     </div>
                 </div>
@@ -286,61 +284,84 @@
 
 @endsection
 
-
 @section('scripts')
-<!-- DATATABLES JS -->
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-
-<!-- SWEETALERT & TOASTR -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
 <script>
 $(document).ready(function () {
     // Détruire l'instance existante si elle existe
-    if ($.fn.DataTable.isDataTable('#datatableScrollXY')) {
-        $('#datatableScrollXY').DataTable().destroy();
+    if ($.fn.DataTable.isDataTable('#datatableAnnonceurs')) {
+        $('#datatableAnnonceurs').DataTable().destroy();
     }
     
-    // Initialisation correcte de DataTable avec scroll
-    $('#datatableScrollXY').DataTable({
-        scrollY: "400px",
-        scrollX: true,
-        scrollCollapse: true,
+    // Initialisation de DataTable avec responsive
+    var table = $('#datatableAnnonceurs').DataTable({
+        responsive: {
+            details: {
+                type: 'column',
+                target: 'tr'
+            }
+        },
         paging: true,
         searching: true,
         ordering: true,
-        responsive: false,
-        autoWidth: false,  // Important pour le scrollX
+        pageLength: 10,
+        lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Tous"]],
         language: {
             url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json"
         },
-        dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
-             '<"row"<"col-sm-12"tr>>' +
-             '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-        // Configuration supplémentaire pour le scroll horizontal
         columnDefs: [
-            {
-                targets: '_all',
-                render: function(data, type, row) {
-                    // Permet aux cellules longues de scroller
-                    if (type === 'display' && data && data.length > 50) {
-                        return '<span style="white-space: nowrap;">' + data + '</span>';
-                    }
-                    return data;
-                }
-            }
-        ]
+            { responsivePriority: 1, targets: 1 },  // Nom - priorité haute
+            { responsivePriority: 2, targets: 6 },  // Actions - priorité haute
+            { responsivePriority: 3, targets: 0 },  // Date - priorité moyenne
+            { responsivePriority: 4, targets: 5 },  // Status - priorité moyenne
+            { responsivePriority: 5, targets: 2 },  // Email - priorité basse
+            { responsivePriority: 6, targets: 3 },  // Téléphone - priorité basse
+            { responsivePriority: 7, targets: 4 }   // Adresse - priorité basse
+        ],
+        autoWidth: false,
+        drawCallback: function() {
+            // Réinitialiser les tooltips après chaque redraw
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        }
     });
     
-    // Forcer les styles CSS pour le conteneur du tableau
-    $('#datatableScrollXY').css('width', '100%');
-    $('.dataTables_scrollBody').css({
-        'overflow-x': 'auto',
-        'overflow-y': 'auto'
+    // Configuration de Toastr
+    toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "timeOut": "5000"
+    };
+    
+    // Messages flash
+    @if(session('success'))
+        toastr.success("{{ session('success') }}");
+    @endif
+    
+    @if(session('error'))
+        toastr.error("{{ session('error') }}");
+    @endif
+    
+    // Gestion des confirmations pour validation/suspension
+    $('.validate-btn, .suspend-btn').on('click', function(e) {
+        e.preventDefault();
+        var href = $(this).attr('href');
+        var action = $(this).hasClass('validate-btn') ? 'valider' : 'suspendre';
+        
+        Swal.fire({
+            title: `Êtes-vous sûr ?`,
+            text: `Vous allez ${action} cet annonceur.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: `Oui, ${action}`,
+            cancelButtonText: 'Annuler'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = href;
+            }
+        });
     });
 });
 </script>

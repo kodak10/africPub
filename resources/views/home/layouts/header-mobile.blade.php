@@ -27,6 +27,7 @@
       <li><a href="/">Accueil</a></li>
       <li><a href="/#about">Qui Sommes-Nous ?</a></li>
       <li><a href="/#howTo">Comment ça marche ?</a></li>
+      <li><a href="/login">Se Connecter</a></li>
     </ul>
 
     <div class="allmobilesection">

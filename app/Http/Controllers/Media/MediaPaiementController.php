@@ -189,7 +189,7 @@ public function detailPaiement($id)
         'periode_couverte' => $paiement->created_at->format('d/m/Y') . ' - ' . now()->format('d/m/Y')
     ];
 
-    return view('dashboard.pages.media.paiements.detail', compact(
+    return view('dashboard.pages.media.paiements.reclamation', compact(
         'paiement',
         'media',
         'statistiquesPaiement'
