@@ -356,7 +356,7 @@
 
                         <div class="col-lg-12">
                             <div class="input-area">
-                                <button type="submit" class="header-btn11 w-100">S'inscrire en tant que Média <span><i class="fa-solid fa-arrow-right"></i></span></button>
+                                <button type="submit" class="header-btn6 w-100">S'inscrire en tant que Média <span><i class="fa-solid fa-arrow-right"></i></span></button>
                             </div>
                         </div>
                     </div>
@@ -414,7 +414,7 @@
 
                         <div class="col-lg-12">
                             <div class="input-area">
-                                <button type="submit" class="header-btn11 w-100">S'inscrire en tant qu'Annonceur <span><i class="fa-solid fa-arrow-right"></i></span></button>
+                                <button type="submit" class="header-btn6 w-100">S'inscrire en tant qu'Annonceur <span><i class="fa-solid fa-arrow-right"></i></span></button>
                             </div>
                         </div>
                     </div>
